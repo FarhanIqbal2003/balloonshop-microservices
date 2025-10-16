@@ -42,8 +42,8 @@ CREATE TABLE dbo.Products (
     Name NVARCHAR(200) NOT NULL,
     Description NVARCHAR(MAX) NULL,
     Price DECIMAL(18,2) NOT NULL DEFAULT(0),
-    Thumbnail NVARCHAR(256) NULL,
-    Image NVARCHAR(256) NULL,
+    Thumbnail NVARCHAR(256) NULL DEFAULT('GenericThumb.png'),
+    Image NVARCHAR(256) NULL DEFAULT('GenericImage.png'),
     PromoFront BIT NOT NULL DEFAULT(0),
     PromoDept BIT NOT NULL DEFAULT(0)
 );
@@ -64,8 +64,17 @@ CREATE TABLE dbo.ProductAttributes (
     AttributeID INT IDENTITY(1,1) PRIMARY KEY,
     ProductID INT NOT NULL,
     AttributeName NVARCHAR(200) NOT NULL,
-    AttributeValue NVARCHAR(1000) NULL,
     CONSTRAINT FK_ProductAttributes_Products FOREIGN KEY(ProductID) REFERENCES dbo.Products(ProductID)
+);
+GO
+
+-- Add new table for attribute values (normalized)
+IF OBJECT_ID('dbo.ProductAttributeValues', 'U') IS NULL
+CREATE TABLE dbo.ProductAttributeValues (
+    AttributeValueID INT IDENTITY(1,1) PRIMARY KEY,
+    AttributeID INT NOT NULL,
+    AttributeValue NVARCHAR(1000) NOT NULL,
+    CONSTRAINT FK_ProductAttributeValues_ProductAttributes FOREIGN KEY(AttributeID) REFERENCES dbo.ProductAttributes(AttributeID)
 );
 GO
 
@@ -316,7 +325,15 @@ CREATE PROCEDURE dbo.CatalogGetProductAttributeValues
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT AttributeID, ProductID, AttributeName, AttributeValue FROM dbo.ProductAttributes WHERE ProductID = @ProductID;
+    SELECT 
+        pa.AttributeID,
+        pav.AttributeValueID,
+        pa.ProductID,
+        pa.AttributeName,
+        pav.AttributeValue
+    FROM dbo.ProductAttributes pa
+    JOIN dbo.ProductAttributeValues pav ON pa.AttributeID = pav.AttributeID
+    WHERE pa.ProductID = @ProductID;
 END
 GO
 
@@ -606,8 +623,15 @@ CREATE PROCEDURE dbo.CatalogGetProductReviews
 AS
 BEGIN
     SET NOCOUNT ON;
-    -- For simplicity return product attributes where AttributeName='Review' if present
-    SELECT AttributeID, ProductID, AttributeName, AttributeValue FROM dbo.ProductAttributes WHERE ProductID=@ProductID AND AttributeName LIKE '%Review%';
+    -- Get reviews from normalized attributes structure
+    SELECT 
+        pa.AttributeID,
+        pa.ProductID,
+        pa.AttributeName,
+        pav.AttributeValue
+    FROM dbo.ProductAttributes pa
+    JOIN dbo.ProductAttributeValues pav ON pa.AttributeID = pav.AttributeID
+    WHERE pa.ProductID = @ProductID AND pa.AttributeName LIKE '%Review%';
 END
 GO
 
@@ -1105,6 +1129,28 @@ AS
 BEGIN
     SET NOCOUNT ON;
     UPDATE dbo.Orders SET DateCreated = @DateCreated, DateShipped = @DateShipped, Status = @Status, AuthCode = @AuthCode, Reference = @Reference, Comments = @Comments WHERE OrderID = @OrderID;
+END
+GO
+
+-- Get product recommendations based on categories
+IF OBJECT_ID('dbo.CatalogGetProductRecommendations','P') IS NOT NULL
+    DROP PROCEDURE dbo.CatalogGetProductRecommendations;
+GO
+CREATE PROCEDURE dbo.CatalogGetProductRecommendations
+    @ProductID INT,
+    @DescriptionLength INT = 1000
+AS
+BEGIN
+    SET NOCOUNT ON;
+    -- Return products from same categories as the current product
+    SELECT DISTINCT TOP 5 p.ProductID, p.Name, LEFT(p.Description, @DescriptionLength) AS Description, 
+           p.Price, p.Thumbnail, p.Image
+    FROM dbo.Products p
+    JOIN dbo.ProductCategories pc1 ON p.ProductID = pc1.ProductID
+    JOIN dbo.ProductCategories pc2 ON pc1.CategoryID = pc2.CategoryID
+    WHERE pc2.ProductID = @ProductID 
+    AND p.ProductID != @ProductID
+    ORDER BY p.ProductID;
 END
 GO
 

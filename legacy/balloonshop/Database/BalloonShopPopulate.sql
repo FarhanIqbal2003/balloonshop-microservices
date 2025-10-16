@@ -36,41 +36,232 @@ END
 SET @Cat3 = (SELECT CategoryID FROM dbo.Categories WHERE Name = 'Ribbons & Bows' AND DepartmentID = @Dept2);
 
 PRINT 'Seeding Products...';
-DECLARE @Prod1 INT; DECLARE @Prod2 INT; DECLARE @Prod3 INT;
-IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = '100-pack Latex Balloons')
+DECLARE @Prod1 INT; DECLARE @Prod2 INT; DECLARE @Prod3 INT; DECLARE @Prod4 INT; DECLARE @Prod5 INT; 
+DECLARE @Prod6 INT; DECLARE @Prod7 INT; DECLARE @Prod8 INT; DECLARE @Prod9 INT; DECLARE @Prod10 INT;
+
+-- Latex Balloons
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = '100-pack Classic Latex Balloons')
 BEGIN
 	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
-	VALUES('100-pack Latex Balloons','Assorted colors, 9-inch latex balloons, pack of 100', 9.99, '0276001.jpg', '0276001.jpg', 1, 1);
+	VALUES('100-pack Classic Latex Balloons','Assorted colors, 9-inch latex balloons, pack of 100. Perfect for birthday parties and celebrations.', 9.99, 't0276001.jpg', '0276001.jpg', 1, 1);
 END
-SET @Prod1 = (SELECT ProductID FROM dbo.Products WHERE Name = '100-pack Latex Balloons');
-IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Happy Birthday Foil Balloon')
+SET @Prod1 = (SELECT ProductID FROM dbo.Products WHERE Name = '100-pack Classic Latex Balloons');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Premium Pearl Latex Balloons')
 BEGIN
 	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
-	VALUES('Happy Birthday Foil Balloon','Round foil balloon printed "Happy Birthday"', 4.99, '114103P.jpg', '114103P.jpg', 0, 1);
+	VALUES('Premium Pearl Latex Balloons','Pearlescent finish latex balloons, 12-inch size, pack of 50. Adds an elegant touch to any event.', 12.99, 't0326801.jpg', '0326801.jpg', 1, 1);
 END
-SET @Prod2 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Happy Birthday Foil Balloon');
-IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Satin Ribbon - 10m')
+SET @Prod2 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Premium Pearl Latex Balloons');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Giant Party Balloon Set')
 BEGIN
 	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
-	VALUES('Satin Ribbon - 10m','Red satin ribbon roll, 10 meters', 2.49, 'ribbon.jpg', 'ribbon.jpg', 0, 0);
+	VALUES('Giant Party Balloon Set','24-inch oversized latex balloons, pack of 10. Makes a big statement at parties.', 14.99, 't0366101.jpg', '0366101.jpg', 0, 1);
 END
-SET @Prod3 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Satin Ribbon - 10m');
+SET @Prod3 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Giant Party Balloon Set');
+
+-- Foil Balloons
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Happy Birthday Star Balloon')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Happy Birthday Star Balloon','18-inch star-shaped foil balloon with Happy Birthday design', 4.99, 't114103p.jpg', '114103P.jpg', 1, 1);
+END
+SET @Prod4 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Happy Birthday Star Balloon');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Congratulations Foil Set')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Congratulations Foil Set','Set of 3 coordinating foil balloons with congratulations theme', 12.99, 't114118p.jpg', '114118p.jpg', 0, 1);
+END
+SET @Prod5 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Congratulations Foil Set');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Number Foil Balloon')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Number Foil Balloon','34-inch large number foil balloon, available in gold finish', 7.99, 't16110p.jpg', '16110p.jpg', 0, 1);
+END
+SET @Prod6 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Number Foil Balloon');
+
+-- Party Supplies
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Deluxe Balloon Bouquet Kit')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Deluxe Balloon Bouquet Kit','Complete kit for creating professional-looking balloon bouquets', 24.99, 't16151p.jpg', '16151p.jpg', 1, 0);
+END
+SET @Prod7 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Deluxe Balloon Bouquet Kit');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Premium Satin Ribbon Roll')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Premium Satin Ribbon Roll','25-meter roll of high-quality satin ribbon, perfect for balloon decorating', 6.99, 't214154p.jpg', '214154p.jpg', 0, 0);
+END
+SET @Prod8 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Premium Satin Ribbon Roll');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Party Decoration Bundle')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Party Decoration Bundle','Complete party decoration set including balloons, ribbons, and accessories', 29.99, 't215302p.jpg', '215302p.jpg', 1, 0);
+END
+SET @Prod9 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Party Decoration Bundle');
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Products WHERE Name = 'Balloon Weight & Clip Set')
+BEGIN
+	INSERT INTO dbo.Products(Name, Description, Price, Thumbnail, Image, PromoFront, PromoDept)
+	VALUES('Balloon Weight & Clip Set','Set of 10 balloon weights with quick-release clips', 8.99, 't38196.jpg', '38196.jpg', 0, 0);
+END
+SET @Prod10 = (SELECT ProductID FROM dbo.Products WHERE Name = 'Balloon Weight & Clip Set');
 
 PRINT 'Linking products to categories...';
+-- Latex Balloons
 IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod1 AND CategoryID = @Cat1)
 	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod1, @Cat1);
-IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod2 AND CategoryID = @Cat2)
-	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod2, @Cat2);
-IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod3 AND CategoryID = @Cat3)
-	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod3, @Cat3);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod2 AND CategoryID = @Cat1)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod2, @Cat1);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod3 AND CategoryID = @Cat1)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod3, @Cat1);
 
-PRINT 'Adding product attributes and a sample review...';
+-- Foil Balloons
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod4 AND CategoryID = @Cat2)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod4, @Cat2);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod5 AND CategoryID = @Cat2)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod5, @Cat2);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod6 AND CategoryID = @Cat2)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod6, @Cat2);
+
+-- Party Supplies & Ribbons
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod7 AND CategoryID = @Cat3)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod7, @Cat3);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod8 AND CategoryID = @Cat3)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod8, @Cat3);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod9 AND CategoryID = @Cat3)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod9, @Cat3);
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategories WHERE ProductID = @Prod10 AND CategoryID = @Cat3)
+	INSERT INTO dbo.ProductCategories(ProductID, CategoryID) VALUES(@Prod10, @Cat3);
+
+PRINT 'Adding product attributes and values...';
+DECLARE @ColorAttr INT;
+DECLARE @SizeAttr INT;
+DECLARE @ReviewAttr INT;
+DECLARE @MaterialAttr INT;
+
+-- Classic Latex Balloons Colors
 IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod1 AND AttributeName = 'ColorOptions')
-	INSERT INTO dbo.ProductAttributes(ProductID, AttributeName, AttributeValue) VALUES(@Prod1, 'ColorOptions', 'Red,Blue,Green,Yellow');
-IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod2 AND AttributeName = 'Size')
-	INSERT INTO dbo.ProductAttributes(ProductID, AttributeName, AttributeValue) VALUES(@Prod2, 'Size', '18-inch');
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName) 
+    VALUES(@Prod1, 'ColorOptions');
+    SET @ColorAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue) 
+    VALUES
+        (@ColorAttr, 'Red'),
+        (@ColorAttr, 'Blue'),
+        (@ColorAttr, 'Green'),
+        (@ColorAttr, 'Yellow'),
+        (@ColorAttr, 'Pink'),
+        (@ColorAttr, 'Purple');
+END
+
+-- Pearl Latex Balloons Colors
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod2 AND AttributeName = 'ColorOptions')
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName) 
+    VALUES(@Prod2, 'ColorOptions');
+    SET @ColorAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue) 
+    VALUES
+        (@ColorAttr, 'Pearl White'),
+        (@ColorAttr, 'Pearl Pink'),
+        (@ColorAttr, 'Pearl Blue'),
+        (@ColorAttr, 'Pearl Gold');
+END
+
+-- Giant Balloon Sizes
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod3 AND AttributeName = 'Size')
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName)
+    VALUES(@Prod3, 'Size');
+    SET @SizeAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue)
+    VALUES
+        (@SizeAttr, '24-inch'),
+        (@SizeAttr, '36-inch');
+END
+
+-- Foil Balloon Attributes
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod4 AND AttributeName = 'Material')
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName)
+    VALUES(@Prod4, 'Material');
+    SET @MaterialAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue)
+    VALUES(@MaterialAttr, 'Mylar Foil');
+END
+
+-- Number Balloon Options
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod6 AND AttributeName = 'Number')
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName)
+    VALUES(@Prod6, 'Number');
+    SET @ColorAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue)
+    VALUES
+        (@ColorAttr, '0'),
+        (@ColorAttr, '1'),
+        (@ColorAttr, '2'),
+        (@ColorAttr, '3'),
+        (@ColorAttr, '4'),
+        (@ColorAttr, '5'),
+        (@ColorAttr, '6'),
+        (@ColorAttr, '7'),
+        (@ColorAttr, '8'),
+        (@ColorAttr, '9');
+END
+
+-- Ribbon Colors
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod8 AND AttributeName = 'ColorOptions')
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName)
+    VALUES(@Prod8, 'ColorOptions');
+    SET @ColorAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue)
+    VALUES
+        (@ColorAttr, 'Red'),
+        (@ColorAttr, 'White'),
+        (@ColorAttr, 'Blue'),
+        (@ColorAttr, 'Gold'),
+        (@ColorAttr, 'Silver');
+END
+
+-- Sample Reviews
 IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod1 AND AttributeName = 'Review')
-	INSERT INTO dbo.ProductAttributes(ProductID, AttributeName, AttributeValue) VALUES(@Prod1, 'Review', 'Great value for decorations.');
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName)
+    VALUES(@Prod1, 'Review');
+    SET @ReviewAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue)
+    VALUES
+        (@ReviewAttr, 'Great value for party decorations! The colors are vibrant and the quality is excellent.'),
+        (@ReviewAttr, 'Perfect for our school event. All balloons inflated well with no duds.');
+END
+
+IF NOT EXISTS (SELECT 1 FROM dbo.ProductAttributes WHERE ProductID = @Prod4 AND AttributeName = 'Review')
+BEGIN
+    INSERT INTO dbo.ProductAttributes(ProductID, AttributeName)
+    VALUES(@Prod4, 'Review');
+    SET @ReviewAttr = SCOPE_IDENTITY();
+    
+    INSERT INTO dbo.ProductAttributeValues(AttributeID, AttributeValue)
+    VALUES
+        (@ReviewAttr, 'The foil balloon looked amazing at our party! Stayed inflated for days.'),
+        (@ReviewAttr, 'High quality material and the design is beautiful. Would buy again!');
+END
 
 PRINT 'Seeding Shipping regions/options and tax...';
 DECLARE @RegionUS INT; DECLARE @RegionEU INT;
