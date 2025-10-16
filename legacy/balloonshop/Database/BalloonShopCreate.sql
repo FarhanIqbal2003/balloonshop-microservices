@@ -18,7 +18,7 @@ GO
 -- Tables
 -- =========================
 
-IF OBJECT_ID('dbo.Departments') IS NULL
+IF OBJECT_ID('dbo.Departments', 'U') IS NULL
 CREATE TABLE dbo.Departments (
     DepartmentID INT IDENTITY(1,1) PRIMARY KEY,
     Name NVARCHAR(100) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE dbo.Departments (
 );
 GO
 
-IF OBJECT_ID('dbo.Categories') IS NULL
+IF OBJECT_ID('dbo.Categories', 'U') IS NULL
 CREATE TABLE dbo.Categories (
     CategoryID INT IDENTITY(1,1) PRIMARY KEY,
     DepartmentID INT NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE dbo.Categories (
 );
 GO
 
-IF OBJECT_ID('dbo.Products') IS NULL
+IF OBJECT_ID('dbo.Products', 'U') IS NULL
 CREATE TABLE dbo.Products (
     ProductID INT IDENTITY(1,1) PRIMARY KEY,
     Name NVARCHAR(200) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE dbo.Products (
 );
 GO
 
-IF OBJECT_ID('dbo.ProductCategories') IS NULL
+IF OBJECT_ID('dbo.ProductCategories', 'U') IS NULL
 CREATE TABLE dbo.ProductCategories (
     ProductID INT NOT NULL,
     CategoryID INT NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE dbo.ProductCategories (
 );
 GO
 
-IF OBJECT_ID('dbo.ProductAttributes') IS NULL
+IF OBJECT_ID('dbo.ProductAttributes', 'U') IS NULL
 CREATE TABLE dbo.ProductAttributes (
     AttributeID INT IDENTITY(1,1) PRIMARY KEY,
     ProductID INT NOT NULL,
@@ -70,14 +70,14 @@ CREATE TABLE dbo.ProductAttributes (
 GO
 
 -- Shipping regions used by CustomerDetailsEdit.ascx
-IF OBJECT_ID('dbo.ShippingRegion') IS NULL
+IF OBJECT_ID('dbo.ShippingRegion', 'U') IS NULL
 CREATE TABLE dbo.ShippingRegion (
     ShippingRegionID INT IDENTITY(1,1) PRIMARY KEY,
     ShippingRegion NVARCHAR(200) NOT NULL
 );
 GO
 
-IF OBJECT_ID('dbo.Shipping') IS NULL
+IF OBJECT_ID('dbo.Shipping', 'U') IS NULL
 CREATE TABLE dbo.Shipping (
     ShippingID INT IDENTITY(1,1) PRIMARY KEY,
     ShippingType NVARCHAR(200) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE dbo.Shipping (
 );
 GO
 
-IF OBJECT_ID('dbo.Tax') IS NULL
+IF OBJECT_ID('dbo.Tax', 'U') IS NULL
 CREATE TABLE dbo.Tax (
     TaxID INT IDENTITY(1,1) PRIMARY KEY,
     TaxType NVARCHAR(200) NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE dbo.Tax (
 );
 GO
 
-IF OBJECT_ID('dbo.ShoppingCartItems') IS NULL
+IF OBJECT_ID('dbo.ShoppingCartItems', 'U') IS NULL
 CREATE TABLE dbo.ShoppingCartItems (
     CartID NVARCHAR(36) NOT NULL,
     ProductID INT NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE dbo.ShoppingCartItems (
 );
 GO
 
-IF OBJECT_ID('dbo.Orders') IS NULL
+IF OBJECT_ID('dbo.Orders', 'U') IS NULL
 CREATE TABLE dbo.Orders (
     OrderID INT IDENTITY(1,1) PRIMARY KEY,
     TotalAmount DECIMAL(18,2) NOT NULL DEFAULT(0),
@@ -130,7 +130,7 @@ CREATE TABLE dbo.Orders (
 );
 GO
 
-IF OBJECT_ID('dbo.OrderDetails') IS NULL
+IF OBJECT_ID('dbo.OrderDetails', 'U') IS NULL
 CREATE TABLE dbo.OrderDetails (
     OrderDetailID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE dbo.OrderDetails (
 );
 GO
 
-IF OBJECT_ID('dbo.Audit') IS NULL
+IF OBJECT_ID('dbo.Audit', 'U') IS NULL
 CREATE TABLE dbo.Audit (
     AuditID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT NOT NULL,
