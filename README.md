@@ -163,7 +163,7 @@ If you'd like to suggest improvements, open an issue or PR.
 
 ## 📜 License
 
-MIT License © [Your Name]
+MIT License © [FarhanIqbal2003]
 
 ---
 
