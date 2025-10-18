@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "balloonshop", "balloonshop\", "{3843B933-634B-4C16-853B-906A5375F5FC}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_59920"
+		Debug.AspNetCompiler.PhysicalPath = "D:\Projects\TestProject\balloonshop-microservices\legacy\balloonshop\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59920\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_59920"
+		Release.AspNetCompiler.PhysicalPath = "D:\Projects\TestProject\balloonshop-microservices\legacy\balloonshop\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59920\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "59920"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3843B933-634B-4C16-853B-906A5375F5FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3843B933-634B-4C16-853B-906A5375F5FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1BDCE23-9C56-4B2E-AB77-262955232447}
+	EndGlobalSection
+EndGlobal

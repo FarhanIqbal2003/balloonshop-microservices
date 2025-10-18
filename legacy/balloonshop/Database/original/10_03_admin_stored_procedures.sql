@@ -1,7 +1,9 @@
 USE BalloonShop
 
 GO
-
+IF OBJECT_ID('OrdersGetByRecent', 'P') IS NOT NULL
+    DROP PROCEDURE OrdersGetByRecent;
+GO
 CREATE PROCEDURE OrdersGetByRecent 
 (@Count smallint)
 AS
@@ -17,6 +19,9 @@ SET ROWCOUNT 0
 
 GO
 
+IF OBJECT_ID('OrdersGetByDate', 'P') IS NOT NULL
+    DROP PROCEDURE OrdersGetByDate;
+GO
 CREATE PROCEDURE OrdersGetByDate 
 (@StartDate smalldatetime,
  @EndDate smalldatetime)
@@ -29,6 +34,9 @@ ORDER BY DateCreated DESC
 
 GO
 
+IF OBJECT_ID('OrdersGetUnverifiedUncanceled', 'P') IS NOT NULL
+    DROP PROCEDURE OrdersGetUnverifiedUncanceled;
+GO
 CREATE PROCEDURE OrdersGetUnverifiedUncanceled
 AS
 SELECT OrderID, DateCreated, DateShipped, 
@@ -39,6 +47,9 @@ ORDER BY DateCreated DESC
 
 GO
 
+IF OBJECT_ID('OrdersGetVerifiedUncompleted', 'P') IS NOT NULL
+    DROP PROCEDURE OrdersGetVerifiedUncompleted;
+GO
 CREATE PROCEDURE OrdersGetVerifiedUncompleted
 AS
 SELECT OrderID, DateCreated, DateShipped, 

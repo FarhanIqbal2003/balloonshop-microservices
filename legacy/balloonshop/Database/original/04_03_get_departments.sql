@@ -2,6 +2,6 @@ USE BalloonShop
 
 GO
 
-CREATE PROCEDURE GetDepartments AS
+CREATE PROCEDURE CatalogGetDepartments AS
 SELECT DepartmentID, Name, Description
 FROM Department
