@@ -74,7 +74,7 @@ public class Link
     if (page == "1")
       return BuildAbsolute(String.Format("{0}-d{1}/", deptUrlName, departmentId));
     else
-      return BuildAbsolute(String.Format("{0}-d{1}/Page={2}", deptUrlName, departmentId, page));
+      return BuildAbsolute(String.Format("{0}-d{1}/Page-{2}", deptUrlName, departmentId, page));
   }
 
   // Generate a department URL for the first page
