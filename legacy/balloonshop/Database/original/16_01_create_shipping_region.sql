@@ -10,3 +10,10 @@ CREATE TABLE ShippingRegion(
 
 GO
 
+INSERT INTO ShippingRegion (ShippingRegion) 
+VALUES ('Please Select'),
+       ('US / Canada'),
+       ('Europe'),
+       ('Rest of World')
+
+GO
