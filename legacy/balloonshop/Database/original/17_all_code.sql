@@ -83,7 +83,7 @@ VALUES (1, 'Next Day Delivery ($20)', 20, 2),
        (4, 'By Air (7 Days, $25)', 25, 3),
        (5, 'By Sea (28 days, $10)', 10, 3),
        (6, 'By Air (10 days, $35)', 35, 4),
-       (7, 'By Sea (38 days, $30), 30, 4)
+       (7, 'By Sea (38 days, $30)', 30, 4)
 
 GO
 
