@@ -1,8 +1,10 @@
-# Orders Service (planned)
+# Catalog Service (planned)
 
-Planned to manage:
-- Customer orders  
-- Order items and payment state  
-- Communication with the Catalog and Users services once decomposed  
+This folder will host the **Catalog microservice** implemented in **.NET 8 Web API**.
 
-_Current status: placeholder for Phase 2 or 3._
+### Planned responsibilities
+- Expose REST endpoints for product browsing and category listings.  
+- Interact with the shared BalloonShop database during early migration phases.  
+- Eventually own its own **CatalogDB**.
+
+_Current status: placeholder for Phase 2 (API Façade Introduction)._

@@ -15,3 +15,14 @@ the modernization process.
   dedicated NuGet packages or replaced with API contracts.
 
 ### Planned Structure
+shared/
+├─ Models/
+├─ Enums/
+├─ Utilities/
+├─ Interfaces/
+└─ Shared.csproj
+
+### Example Usage
+Each microservice may add a project reference:
+```bash
+dotnet add ../shared/Shared.csproj reference

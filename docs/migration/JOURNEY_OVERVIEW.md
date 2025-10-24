@@ -90,4 +90,4 @@ For detailed rationale behind the chosen approach, refer to:
 
 ---
 
-_Last updated: {2025/10/23}_
+_Last updated: {{date}}_
