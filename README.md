@@ -1,63 +1,72 @@
-# BalloonShop Microservices Migration
-### A real-world monolith → microservices modernization journey using .NET
-
-This project demonstrates how to **gradually decompose the classic _BalloonShop_ ASP.NET Web Forms application** into a set of **independent, containerized microservices** built with modern .NET technologies.
-
-Rather than rewriting everything from scratch, this repo follows the **Strangler-Fig pattern** — migrating one bounded context at a time while keeping the legacy system functional throughout.
+# 🎈 BalloonShop Modernization Journey  
+### From ASP.NET Web Forms → .NET 8 Microservices (Strangler Fig Pattern)
 
 ---
 
-## 🎯 Project Objective
+## 🧭 Overview
 
-> Transform the original BalloonShop e-commerce monolith (ASP.NET Web Forms + ADO.NET + SQL Server) into a modular, service-oriented architecture based on .NET 8, REST APIs, and asynchronous communication — **without a big-bang rewrite**.
+This repository documents the complete modernization journey of the **BalloonShop e-commerce** application — originally built with **ASP.NET Web Forms and SQL Server** — into a modern, cloud-ready **.NET 8 microservices architecture**.
 
----
-
-## 🧭 Migration Strategy Overview
-
-### Key principles
-- **Gradual extraction** — decompose functionality phase by phase.
-- **Maintain functionality** — the store remains operational during migration.
-- **Shared DB → API Boundary → Independent DB** — isolate ownership over time.
-- **Incremental replacement** — slowly replace Web Forms UI with a modern frontend.
-- **Automation** — CI/CD builds and tests both legacy and new services.
+The project follows the **Strangler Fig pattern**, ensuring that the legacy system remains fully functional while new microservices are introduced gradually.  
+Each modernization phase is version-tagged, documented, and designed to demonstrate safe, incremental evolution.
 
 ---
 
 ## 🗂️ Repository Structure
 
+
 ```
-/legacy/balloonshop/           ← Original ASP.NET Web Forms app
-/services/                     ← New .NET 8 microservices
-  /catalog-service/
-  /identity-service/
-  /orders-service/
-  /cart-service/
-  /payments-service/
-/gateway/                      ← API Gateway (YARP / Ocelot)
-/frontend/                     ← New SPA or Blazor storefront
-/docs/                         ← Architecture and migration documentation
-/migration/                    ← Phase-by-phase notes
-/infra/                        ← Docker Compose, DB, and broker config
-/.github/workflows/            ← CI/CD pipelines
+balloonshop-microservices/
+│
+├─ legacy/ # Original ASP.NET Web Forms site (untouched)
+│ └─ balloonshop/
+│
+├─ legacy-modernized/ # Safe clone used for Strangler integration testing
+│ └─ balloonshop/
+│
+├─ services/ # .NET 8 microservices
+│ ├─ catalog/
+│ ├─ orders/
+│ ├─ users/
+│ ├─ cart/
+│ └─ payments/
+│
+├─ shared/ # Shared DTOs, contracts, helpers
+│
+├─ database/ # Database scripts and future EF migrations
+│
+└─ docs/
+├─ migration/ # Phase-by-phase technical documentation
+└─ journey_overview.md # Migration roadmap and milestone tracking
 ```
 
 ---
 
-## 🧱 Migration Phases (Top Level Roadmap)
+## 🧩 Modernization Phases
 
-| Phase | Objective | Result |
-|:------|:-----------|:--------|
-| **0. Baseline Setup** | Import original BalloonShop code, DB, and get it running. Add CI to build legacy app. | Working monolith baseline. |
-| **1. Modularize Monolith** | Refactor code into clear namespaces (Catalog, Orders, Identity). Introduce service/repository interfaces. | Logical boundaries identified. |
-| **2. Add API Façade** | Create new ASP.NET Core Web API layer exposing selected Catalog endpoints using existing code. | `/api/products` available, still uses shared DB. |
-| **3. Extract Catalog Service** | Move Catalog logic into standalone .NET 8 project. Reuse legacy DB initially. | CatalogService runs separately; WebForms calls it over HTTP. |
-| **4. Introduce API Gateway** | Add YARP/Ocelot to route between monolith and new service. | Unified access point for hybrid system. |
-| **5. Split Catalog Database** | Migrate catalog tables to new schema; legacy now calls via API. | Catalog data isolated and owned by CatalogService. |
-| **6. Extract Identity / Auth** | Implement new IdentityService with ASP.NET Core Identity + JWT. Integrate with legacy login page. | Unified authentication system. |
-| **7. Extract Orders & Cart** | Move order/cart logic into services. Introduce message broker (RabbitMQ). | Async order processing. |
-| **8. Replace Web UI** | Build a modern frontend (React or Blazor) using APIs only. Phase out Web Forms pages. | New UI replaces legacy views. |
-| **9. Retire Monolith** | Remove remaining dependencies and shared DB tables. | Fully microservice-based architecture. |
+| Phase | Title | Description | Deliverable |
+|:--|:--|:--|:--|
+| **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | Working ASP.NET Web Forms site and initial repo documentation. |
+| **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | Organized project layout and phase documentation (`v0.2-structure-setup`). |
+| **2. API Façade (Catalog Service)** | Introduce .NET 8 Catalog Service exposing product and category endpoints from the legacy DB. Connect it to the `legacy-modernized` clone for Strangler integration. | First .NET 8 API operational and accessible (`v0.3-api-facade`). |
+| **3. Legacy Modernized Clone** | Integrate the cloned Web Forms site with new APIs. Demonstrate the Strangler Fig pattern without touching original legacy code. | Legacy clone successfully consuming CatalogService (`v0.4-modernized-clone`). |
+| **4. Service Expansion** | Add additional microservices (Orders, Users, Cart, Payments). Share DTOs and contracts through `/shared/`. | Multi-service environment functional (`v0.5-services-expansion`). |
+| **5. Database Refactor & Migrations** | Transition from shared DB to per-service databases using EF Core migrations. | Split databases and schema alignment (`v0.6-database-refactor`). |
+| **6. Identity & Auth Modernization** | Introduce centralized identity service (JWT-based). Replace legacy membership provider. | Secure, tokenized authentication (`v0.7-identity-service`). |
+| **7. Frontend Modernization** | Optionally replace Web Forms UI with Blazor or MVC frontend consuming APIs. | Fully decoupled frontend (`v0.8-frontend`). |
+| **8. Legacy Sunset** | Retire the original Web Forms app once all functionality has been modernized. | Complete transition to microservices (`v1.0-release`). |
+
+---
+
+## 🪴 Architectural Approach
+
+**Pattern:** Strangler Fig  
+**Principle:** “Let the new system grow around the old, one feature at a time.”
+
+- 🧱 The legacy site stays fully functional.  
+- 🌿 New .NET 8 APIs (Catalog, Orders, etc.) replace internal logic incrementally.  
+- 🔁 Shared DTOs ensure data consistency between legacy and new APIs.  
+- 🚀 Gradual replacement avoids downtime and enables continuous progress.
 
 ---
 
@@ -109,19 +118,19 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) will:
 
 ---
 
-## 🧾 Version Tags (for demo tracking)
+## 🧾 Version Tags
 
-Each stable migration phase will be tagged:
-```
-v0.1-baseline
-v0.2-api-facade
-v0.3-catalog-service
-v0.4-split-db
-v0.5-identity-service
-v0.6-orders-cart
-v0.7-frontend
-v1.0-final-microservices
-```
+| Tag | Description |
+|------|-------------|
+| `v0.1-baseline` | Initial legacy import and repository setup |
+| `v0.2-structure-setup` | Repository structure for microservice migration established |
+| `v0.3-api-facade` | First .NET 8 CatalogService implemented |
+| `v0.4-modernized-clone` | Legacy clone integrated with CatalogService |
+| `v0.5-services-expansion` | Orders, Cart, Payments microservices added |
+| `v0.6-database-refactor` | Per-service databases and EF migrations |
+| `v0.7-identity-service` | Centralized identity and authentication implemented |
+| `v0.8-frontend` | Modern frontend (Blazor/MVC/React) |
+| `v1.0-release` | Legacy fully retired, microservices in production |
 
 ---
 
@@ -140,17 +149,40 @@ v1.0-final-microservices
 ## 🗣️ Project Status
 
 | Phase | Progress |
-|-------|-----------|
-| 0. Baseline setup | 🟢 Complete |
-| 1. Modularization | ⬜ Planned |
-| 2. API Façade | ⬜ Planned |
-| 3. Catalog extraction | ⬜ Pending |
-| 4. Gateway integration | ⬜ Pending |
-| 5. DB split | ⬜ Pending |
-| 6. Identity extraction | ⬜ Pending |
-| 7. Orders & Cart | ⬜ Pending |
-| 8. Frontend migration | ⬜ Pending |
-| 9. Legacy sunset | ⬜ Future |
+|:--|:--|
+| 0. Baseline Setup | 🟢 Complete |
+| 1. Structure Setup | 🟢 Complete |
+| 2. API Façade (Catalog Service) | 🟡 In Progress |
+| 3. Legacy Modernized Clone | ⬜ Planned |
+| 4. Service Expansion (Orders, Cart, Payments) | ⬜ Planned |
+| 5. Database Refactor & Migrations | ⬜ Pending |
+| 6. Identity & Auth Modernization | ⬜ Pending |
+| 7. Frontend Modernization | ⬜ Pending |
+| 8. Legacy Sunset | ⬜ Future |
+
+---
+
+## 📘 Documentation Index
+
+| File | Description |
+|------|--------------|
+| `/docs/journey_overview.md` | End-to-end roadmap of all modernization phases |
+| `/docs/migration/phase-0-baseline-setup.md` | Import of original BalloonShop legacy app |
+| `/docs/migration/phase-1-structure-setup.md` | Repository structure and preparation |
+| `/docs/migration/phase-2-api-facade.md` | First .NET 8 API façade (CatalogService) |
+| `/legacy-modernized/balloonshop/README.md` | Integration clone for Strangler Fig demonstration |
+
+---
+
+## 🧠 Key Learning Themes
+
+| Topic | Description |
+|-------|--------------|
+| **Strangler Fig Pattern** | Incremental modernization around a live legacy app |
+| **Microservice Architecture** | Isolated services for catalog, orders, cart, identity, and payments |
+| **Repository Design** | Shared contracts and DTOs enabling compatibility |
+| **Continuous Integration** | Build, test, and tag pipeline for each phase |
+| **Gradual Decomposition** | Moving from monolith → modular → distributed microservices |
 
 ---
 
