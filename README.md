@@ -46,8 +46,8 @@ balloonshop-microservices/
 
 | Phase | Title | Description | Deliverable |
 |:--|:--|:--|:--|
-| **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | Working ASP.NET Web Forms site and initial repo documentation. |
-| **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | Organized project layout and phase documentation (`v0.2-structure-setup`). |
+| **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | ✅ Working ASP.NET Web Forms app compiled and verified locally, with baseline documentation and initial repository setup (`v0.1-baseline`). |
+| **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | ✅ Established multi-project folder structure (`/legacy`, `/legacy-modernized`, `/services`, `/shared`, `/docs`) with corresponding documentation and cloned `legacy-modernized` app (`v0.2-structure-setup`). |
 | **2. API Façade (Catalog Service)** | Introduce .NET 8 Catalog Service exposing product and category endpoints from the legacy DB. Connect it to the `legacy-modernized` clone for Strangler integration. | First .NET 8 API operational and accessible (`v0.3-api-facade`). |
 | **3. Legacy Modernized Clone** | Integrate the cloned Web Forms site with new APIs. Demonstrate the Strangler Fig pattern without touching original legacy code. | Legacy clone successfully consuming CatalogService (`v0.4-modernized-clone`). |
 | **4. Service Expansion** | Add additional microservices (Orders, Users, Cart, Payments). Share DTOs and contracts through `/shared/`. | Multi-service environment functional (`v0.5-services-expansion`). |
