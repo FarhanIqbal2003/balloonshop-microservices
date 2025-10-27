@@ -44,7 +44,7 @@ balloonshop-microservices/
 
 ## 🧩 Modernization Phases
 
-| Phase | Title | Description | Deliverable |
+| Phase | Title | Description |
 |:--|:--|:--|:--|
 | **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | ✅ Working ASP.NET Web Forms app compiled and verified locally, with baseline documentation and initial repository setup (`v0.1-baseline`). |
 | **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | ✅ Established multi-project folder structure (`/legacy`, `/legacy-modernized`, `/services`, `/shared`, `/docs`) with corresponding documentation and cloned `legacy-modernized` app (`v0.2-structure-setup`). |
