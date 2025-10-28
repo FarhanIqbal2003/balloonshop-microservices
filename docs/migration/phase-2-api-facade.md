@@ -31,3 +31,46 @@ Introduce the first .NET 8 Web API (`CatalogService`) that serves product and ca
 
 ## High-level design
 
+Browser
+↓
+legacy-modernized UI (ASP.NET Web Forms) legacy UI (unchanged)
+↓
+HTTP → CatalogService (.NET 8 Web API)
+↓
+SQL Server (existing BalloonShop database)
+
+
+- The API is **read-only** for this phase.
+- `/shared` contains DTOs (ProductDto, CategoryDto) used by both API and the modernized clone.
+- Authentication for phase 2 can be simple (local dev: none or API key). Later phases will replace with a proper Identity service.
+
+---
+
+## API contract (initial endpoints)
+
+### GET /api/categories
+Returns: `List<CategoryDto>`
+
+CategoryDto
+```json
+{
+  "categoryId": 1,
+  "departmentId": 1,
+  "name": "Balloons",
+  "description": "All types of balloons"
+}
+
+---
+# Legacy to DTO Field Mapping
+## Table: Product
+
+| Legacy Column       | DTO Field          | Notes |
+|---------------------|-------------------|-------|
+| ProductID           | ProductDto.Id     | Renamed for consistency with DTO naming conventions |
+| Name                | ProductDto.Name   | Same meaning |
+| Description         | ProductDto.Description | Same meaning |
+| Price               | ProductDto.Price  | Converted from `money` to `decimal` |
+| Thumbnail           | ProductDto.ThumbnailUrl | Renamed for clarity |
+| Image               | ProductDto.ImageUrl | Renamed for clarity |
+| PromoFront          | ProductDto.IsFeatured | Converted from bit to bool |
+| PromoDept           | ProductDto.IsDepartmentFeatured | Converted from bit to bool |
