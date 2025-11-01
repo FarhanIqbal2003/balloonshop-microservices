@@ -1,4 +1,6 @@
 .vs/
 *.config
-**/[Oo]bj/*
-**/[Bb]in/*
+[Bb]in/
+[Oo]bj/
+**/[Oo]bj/
+**/[Bb]in/
