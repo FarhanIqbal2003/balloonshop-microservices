@@ -9,6 +9,8 @@ namespace CatalogService.Infrastructure.Mappings
         public MappingProfile()
         {
             CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
         }
     }
 }
