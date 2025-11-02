@@ -45,7 +45,7 @@ balloonshop-microservices/
 ## 🧩 Modernization Phases
 
 | Phase | Title | Description |
-|:--|:--|:--|:--|
+|:--|:--|:--|
 | **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | ✅ Working ASP.NET Web Forms app compiled and verified locally, with baseline documentation and initial repository setup (`v0.1-baseline`). |
 | **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | ✅ Established multi-project folder structure (`/legacy`, `/legacy-modernized`, `/services`, `/shared`, `/docs`) with corresponding documentation and cloned `legacy-modernized` app (`v0.2-structure-setup`). |
 | **2. API Façade (Catalog Service)** | Introduce .NET 8 Catalog Service exposing product and category endpoints from the legacy DB. Connect it to the `legacy-modernized` clone for Strangler integration. | First .NET 8 API operational and accessible (`v0.3-api-facade`). |
@@ -57,6 +57,7 @@ balloonshop-microservices/
 | **8. Legacy Sunset** | Retire the original Web Forms app once all functionality has been modernized. | Complete transition to microservices (`v1.0-release`). |
 
 ---
+
 
 ## 🪴 Architectural Approach
 
