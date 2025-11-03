@@ -2,17 +2,17 @@ namespace CatalogService.Core.Entities
 {
     public class Product
     {
-        public int ProductId { get; set; }            // matches [ProductID]
+        // Matches existing column "Id" in SQL
+        public int Id { get; set; }
+
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }            // maps from [money] to decimal
-        public string? Thumbnail { get; set; }        // maps [Thumbnail]
-        public string? Image { get; set; }            // maps [Image]
-        public bool PromoFront { get; set; }          // maps [PromoFront]
-        public bool PromoDept { get; set; }           // maps [PromoDept]
+        public decimal Price { get; set; }
+        public string? ImageUrl { get; set; }
 
-        // 🧩 Navigation (added for EF relationships)
-        public int? CategoryId { get; set; }          // optional; might not exist in DB yet
+        // New nullable FK for Category
+        public int? CategoryId { get; set; }
+
         public Category? Category { get; set; }
     }
 }

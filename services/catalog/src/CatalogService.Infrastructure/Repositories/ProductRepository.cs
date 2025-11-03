@@ -18,7 +18,7 @@ namespace CatalogService.Infrastructure.Repositories
             await _db.Products.AsNoTracking().ToListAsync();
 
         public async Task<Product?> GetByIdAsync(int id) =>
-            await _db.Products.AsNoTracking().FirstOrDefaultAsync(p => p.ProductId == id);
+            await _db.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
         public async Task AddAsync(Product product)
         {

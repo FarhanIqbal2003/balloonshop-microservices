@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using CatalogService.Infrastructure.Data; // ✅ adjust namespace where CatalogDbContext is located
+using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService.Api
 {
@@ -7,7 +10,25 @@ namespace CatalogService.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            // ✅ Apply pending migrations automatically at startup
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<CatalogDbContext>();
+                    context.Database.Migrate(); // 👈 runs pending migrations if DB exists
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Migration failed: {ex.Message}");
+                    throw;
+                }
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

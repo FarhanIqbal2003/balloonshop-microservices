@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\catalogservice.api\\CatalogService.Api.csproj": {}
+    "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\CatalogService.Api\\CatalogService.Api.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\catalogservice.api\\CatalogService.Api.csproj": {
+    "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\CatalogService.Api\\CatalogService.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\catalogservice.api\\CatalogService.Api.csproj",
+        "projectUniqueName": "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\CatalogService.Api\\CatalogService.Api.csproj",
         "projectName": "CatalogService.Api",
-        "projectPath": "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\catalogservice.api\\CatalogService.Api.csproj",
+        "projectPath": "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\CatalogService.Api\\CatalogService.Api.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\catalogservice.api\\obj\\",
+        "outputPath": "D:\\Projects\\TestProject\\balloonshop-microservices\\services\\catalog\\src\\CatalogService.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
