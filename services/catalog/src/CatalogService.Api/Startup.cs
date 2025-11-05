@@ -1,5 +1,6 @@
 using AutoMapper;
 using CatalogService.Core.Interfaces;
+using CatalogService.Core.Services;
 using CatalogService.Infrastructure.Data;
 using CatalogService.Infrastructure.Mappings;
 using CatalogService.Infrastructure.Repositories;
@@ -26,6 +27,12 @@ namespace CatalogService.Api
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
