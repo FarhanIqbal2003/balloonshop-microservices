@@ -26,12 +26,11 @@ namespace CatalogService.Api
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductService, ProductService>();
-
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<IDepartmentService, DepartmentService>();
-
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<ICategoryService, CategoryService>();
         }
 

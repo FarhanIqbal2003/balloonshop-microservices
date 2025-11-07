@@ -46,17 +46,18 @@ balloonshop-microservices/
 
 | Phase | Title | Description |
 |:--|:--|:--|
-| **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | ✅ Working ASP.NET Web Forms app compiled and verified locally, with baseline documentation and initial repository setup (`v0.1-baseline`). |
-| **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | ✅ Established multi-project folder structure (`/legacy`, `/legacy-modernized`, `/services`, `/shared`, `/docs`) with corresponding documentation and cloned `legacy-modernized` app (`v0.2-structure-setup`). |
-| **2. API Façade (Catalog Service)** | Introduce .NET 8 Catalog Service exposing product and category endpoints from the legacy DB. Connect it to the `legacy-modernized` clone for Strangler integration. | First .NET 8 API operational and accessible (`v0.3-api-facade`). |
-| **3. Legacy Modernized Clone** | Integrate the cloned Web Forms site with new APIs. Demonstrate the Strangler Fig pattern without touching original legacy code. | Legacy clone successfully consuming CatalogService (`v0.4-modernized-clone`). |
-| **4. Service Expansion** | Add additional microservices (Orders, Users, Cart, Payments). Share DTOs and contracts through `/shared/`. | Multi-service environment functional (`v0.5-services-expansion`). |
-| **5. Database Refactor & Migrations** | Transition from shared DB to per-service databases using EF Core migrations. | Split databases and schema alignment (`v0.6-database-refactor`). |
-| **6. Identity & Auth Modernization** | Introduce centralized identity service (JWT-based). Replace legacy membership provider. | Secure, tokenized authentication (`v0.7-identity-service`). |
-| **7. Frontend Modernization** | Optionally replace Web Forms UI with Blazor or MVC frontend consuming APIs. | Fully decoupled frontend (`v0.8-frontend`). |
-| **8. Legacy Sunset** | Retire the original Web Forms app once all functionality has been modernized. | Complete transition to microservices (`v1.0-release`). |
+| **0. Baseline Setup** | Import and document the original legacy BalloonShop application. | ✅ Working ASP.NET Web Forms app compiled and verified locally, with baseline documentation and initial repository setup (`v0.0-baseline`). |
+| **1. Structure Setup** | Create repository structure for legacy, services, shared, and docs folders. Preserve baseline; no code refactoring yet. | ✅ Established multi-project folder structure (`/legacy`, `/legacy-modernized`, `/services`, `/shared`, `/docs`) with corresponding documentation and cloned `legacy-modernized` app (`v0.1-structure-setup`). |
+| **2. API Façade (Catalog Service)** | Introduce .NET 8 Catalog Service exposing **Products**, **Categories**, and **Departments** endpoints from the legacy DB. Validate CRUD and migrations through Swagger. | ✅ First .NET 8 API operational and verified locally (`v0.2-api-facade`). |
+| **3. Legacy Modernized Clone** | Integrate the cloned Web Forms site with new APIs. Demonstrate the **Strangler Fig** pattern without touching original legacy code. Containerize the Catalog Service for integration. | 🟡 In progress — CatalogService containerization and monolith integration (`v0.3-catalog-service`). |
+| **4. Service Expansion** | Add additional microservices (Orders, Users, Cart, Payments). Share DTOs and contracts through `/shared/`. | ⬜ Planned — Multi-service environment functional (`v0.4-services-expansion`). |
+| **5. Database Refactor & Migrations** | Transition from shared DB to per-service databases using EF Core migrations. | ⬜ Pending — Split databases and schema alignment (`v0.5-database-refactor`). |
+| **6. Identity & Auth Modernization** | Introduce centralized identity service (JWT-based). Replace legacy membership provider. | ⬜ Pending — Secure, tokenized authentication (`v0.6-identity-service`). |
+| **7. Frontend Modernization** | Optionally replace Web Forms UI with Blazor or MVC frontend consuming APIs. | ⬜ Pending — Fully decoupled frontend (`v0.7-frontend`). |
+| **8. Legacy Sunset** | Retire the original Web Forms app once all functionality has been modernized. | ⬜ Future — Complete transition to microservices (`v1.0-release`). |
 
 ---
+
 
 
 ## 🪴 Architectural Approach
@@ -153,8 +154,8 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) will:
 |:--|:--|
 | 0. Baseline Setup | 🟢 Complete |
 | 1. Structure Setup | 🟢 Complete |
-| 2. API Façade (Catalog Service) | 🟡 In Progress |
-| 3. Legacy Modernized Clone | ⬜ Planned |
+| 2. API Façade (Catalog Service) | 🟢 Complete |
+| 3. Legacy Modernized Clone | 🟡 In Progress – Service Containerization and Integration |
 | 4. Service Expansion (Orders, Cart, Payments) | ⬜ Planned |
 | 5. Database Refactor & Migrations | ⬜ Pending |
 | 6. Identity & Auth Modernization | ⬜ Pending |
