@@ -1,15 +1,18 @@
-# Migration Phase 3 — Extract Catalog Service
+### 3. Legacy Modernized Clone  
+**Status:** 🟡 *In Progress – Service Containerization and Integration*  
+**Tag:** `v0.3-catalog-service`  
+**Summary:**  
+This phase focuses on **containerizing** the Catalog Service (developed in Phase 2) and **integrating** it within the hybrid environment alongside the Legacy Modernized Clone.  
+The goal is to have the clone consume catalog data exclusively through the **Catalog Service API**, replacing direct database queries.  
 
-## 🎯 Goal
-Isolate the catalog domain into a new service without breaking the monolith.
+**Key Deliverables:**  
+- Containerized `.NET 8` Catalog Service with multi-stage Dockerfile  
+- Updated `docker-compose` environment (Catalog Service + Legacy Modernized Clone + SQL Server)  
+- Shared DTO contracts in `/shared/Shared.Contracts/`  
+- Integrated API consumption from the clone  
+- Health & Swagger endpoints validated (`/health`, `/swagger`)  
+- CI/CD pipeline updates to build and publish service images  
+- Milestone tag: **`v0.3-catalog-service`**
 
-## 🧩 Scope
-- Create `CatalogService` in `/services/catalog-service/`.
-- Migrate catalog logic and models.
-- Connect to the same database (shared DB phase).
-- Replace monolith calls with HTTP requests.
-
-## 🚀 Deliverables
-- CatalogService containerized and reachable.
-- Legacy UI consuming it via API.
-- Tag as `v0.3-catalog-service`.
+**Next:**  
+Proceed to **Phase 4 – Order Service Extraction**, following the same microservice and integration pattern.
