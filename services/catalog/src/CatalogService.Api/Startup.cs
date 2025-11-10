@@ -20,6 +20,8 @@ namespace CatalogService.Api
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+            services.AddHealthChecks().AddSqlServer(_config.GetConnectionString("CatalogDb"));
+
             services.AddDbContext<CatalogDbContext>(opts =>
                 opts.UseSqlServer(_config.GetConnectionString("CatalogDb")));
 
@@ -44,7 +46,11 @@ namespace CatalogService.Api
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }
