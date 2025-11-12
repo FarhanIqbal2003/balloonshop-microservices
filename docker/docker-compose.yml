@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: catalog-sql
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - catalognet
+
+  catalog-service:
+    build:
+      context: ../services/catalog
+      dockerfile: Dockerfile
+    container_name: catalog-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=CatalogDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;"
+    depends_on:
+      - sqlserver
+    networks:
+      - catalognet
+
+networks:
+  catalognet:
+    driver: bridge
