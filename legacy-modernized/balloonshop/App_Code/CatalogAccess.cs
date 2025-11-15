@@ -52,13 +52,20 @@ public static class CatalogAccess
   // Retrieve the list of departments 
   public static DataTable GetDepartments()
   {
-    // get a configured DbCommand object
-    DbCommand comm = GenericDataAccess.CreateCommand();
-    // set the stored procedure name
-    comm.CommandText = "CatalogGetDepartments";
-    // execute the stored procedure and return the results
-    return GenericDataAccess.ExecuteSelectCommand(comm);
-  }
+        var items = CatalogApiClient.GetDepartments(); // returns List<DepartmentDto>
+
+        // convert list to DataTable (so UI pages remain unchanged)
+        var dt = new DataTable();
+        dt.Columns.Add("Name", typeof(string));
+        dt.Columns.Add("Description", typeof(string));
+
+        foreach (var item in items)
+        {
+            dt.Rows.Add(item.Name, item.Description);
+        }
+
+        return dt;
+    }
 
   // get department details
   public static DepartmentDetails GetDepartmentDetails(string departmentId)
