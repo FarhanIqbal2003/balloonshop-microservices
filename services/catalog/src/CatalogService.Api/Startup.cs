@@ -1,4 +1,3 @@
-using AutoMapper;
 using CatalogService.Core.Interfaces;
 using CatalogService.Core.Services;
 using CatalogService.Infrastructure.Data;
@@ -6,6 +5,7 @@ using CatalogService.Infrastructure.Mappings;
 using CatalogService.Infrastructure.Repositories;
 using CatalogService.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CatalogService.Api
 {
@@ -20,7 +20,7 @@ namespace CatalogService.Api
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            services.AddHealthChecks().AddSqlServer(_config.GetConnectionString("CatalogDb"));
+            services.AddHealthChecks();
 
             services.AddDbContext<CatalogDbContext>(opts =>
                 opts.UseSqlServer(_config.GetConnectionString("CatalogDb")));

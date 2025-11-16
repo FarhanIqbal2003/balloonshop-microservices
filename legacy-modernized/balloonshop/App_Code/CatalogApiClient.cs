@@ -6,7 +6,7 @@ using System.Configuration;
 
 public static class CatalogApiClient
 {
-    private static readonly string _baseUrl = ConfigurationManager.AppSettings["CatalogService.BaseUrl"];
+    private static readonly string _baseUrl = ConfigurationManager.AppSettings["CatalogServiceBaseUrl"];
 
     public static List<DepartmentDto> GetDepartments()
     {
@@ -14,7 +14,7 @@ public static class CatalogApiClient
         {
             try
             {
-                string url = _baseUrl + "/api/catalog/departments";
+                string url = _baseUrl + "api/v1/departments";
                 string json = client.DownloadString(url);
 
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -26,10 +26,24 @@ public static class CatalogApiClient
             }
         }
     }
+    public static DepartmentDto GetDepartmentById(int id)
+    {
+        using (var client = new WebClient())
+        {
+            client.BaseAddress = _baseUrl;
+            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+            string response = client.DownloadString("api/v1/Departments/" + id);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<DepartmentDto>(response);
+        }
+    }
 }
 
 public class DepartmentDto
 {
+    public int DepartmentID { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 }
