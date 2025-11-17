@@ -87,26 +87,14 @@ public static class CatalogAccess
     // Get category details
     public static CategoryDetails GetCategoryDetails(string categoryId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetCategoryDetails";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@CategoryID";
-        param.Value = categoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-
-        // execute the stored procedure
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
+        var items = CatalogApiClient.GetCategoryById(int.Parse(categoryId));
         // wrap retrieved data into a CategoryDetails object
         CategoryDetails details = new CategoryDetails();
-        if (table.Rows.Count > 0)
+        if (items != null)
         {
-            details.DepartmentId = Int32.Parse(table.Rows[0]["DepartmentID"].ToString());
-            details.Name = table.Rows[0]["Name"].ToString();
-            details.Description = table.Rows[0]["Description"].ToString();
+            details.DepartmentId = items.DepartmentID;
+            details.Name = items.Name;
+            details.Description = items.Description;
         }
         // return department details
         return details;
@@ -115,35 +103,21 @@ public static class CatalogAccess
     // Get product details
     public static ProductDetails GetProductDetails(string productId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetProductDetails";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
+        var items = CatalogApiClient.GetProductById(int.Parse(productId));
 
-        // execute the stored procedure
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
         // wrap retrieved data into a ProductDetails object
         ProductDetails details = new ProductDetails();
-        if (table.Rows.Count > 0)
+        if (items != null)
         {
-            // get the first table row
-            DataRow dr = table.Rows[0];
             // get product details
-            details.ProductID = int.Parse(productId);
-            details.Name = dr["Name"].ToString();
-            details.Description = dr["Description"].ToString();
-            details.Price = Decimal.Parse(dr["Price"].ToString());
-            details.Thumbnail = dr["Thumbnail"].ToString();
-            details.Image = dr["Image"].ToString();
-            details.PromoFront = bool.Parse(dr["PromoFront"].ToString());
-            details.PromoDept =
-        bool.Parse(dr["PromoDept"].ToString());
+            details.ProductID = items.ProductID;
+            details.Name = items.Name;
+            details.Description = items.Description;
+            details.Price = items.Price;
+            details.Thumbnail = items.Thumbnail;
+            details.Image = items.Image;
+            details.PromoFront = items.PromoFront;
+            details.PromoDept = items.PromoDept;
         }
         // return department details
         return details;
