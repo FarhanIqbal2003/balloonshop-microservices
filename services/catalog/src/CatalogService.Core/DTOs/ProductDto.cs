@@ -7,6 +7,7 @@ namespace CatalogService.Core.DTOs
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
+        public string? Thumbnail { get; set; }
         public bool PromoFront { get; set; }
         public bool PromoDept { get; set; }
 

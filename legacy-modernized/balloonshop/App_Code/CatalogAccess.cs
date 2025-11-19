@@ -143,43 +143,7 @@ public static class CatalogAccess
     // Retrieve the list of products on catalog promotion
     public static DataTable GetProductsOnFrontPromo(string pageNumber, out int howManyPages)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetProductsOnFrontPromo";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DescriptionLength";
-        param.Value = BalloonShopConfiguration.ProductDescriptionLength;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PageNumber";
-        param.Value = pageNumber;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductsPerPage";
-        param.Value = BalloonShopConfiguration.ProductsPerPage;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@HowManyProducts";
-        param.Direction = ParameterDirection.Output;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-
-        // execute the stored procedure and save the results in a DataTable
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
-        // calculate how many pages of products and set the out parameter
-        int howManyProducts = Int32.Parse(comm.Parameters
-      ["@HowManyProducts"].Value.ToString());
-        howManyPages = (int)Math.Ceiling((double)howManyProducts / (double)BalloonShopConfiguration.ProductsPerPage);
-        // return the page of products
-        return table;
+        return CatalogApiClient.GetProductsOnFrontPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, out howManyPages);
     }
 
     // retrieve the list of products featured for a department

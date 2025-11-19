@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.Configuration;
+using System.Data;
+using AmazonEcs;
 
 public static class CatalogApiClient
 {
@@ -65,7 +67,57 @@ public static class CatalogApiClient
             return serializer.Deserialize<ProductDto>(response);
         }
     }
+    public static DataTable GetProductsOnFrontPromo(string pageNumber, int pageSize, int descriptionLength, out int howManyPages)
+    {
+        using (var client = new WebClient())
+        {
+            client.BaseAddress = _baseUrl;
+            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+            string url = "api/v1/Products/promo-front?pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&descriptionLength=" + descriptionLength;
+
+            string response = client.DownloadString(url);
+
+            // Deserialize strongly typed DTO
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            var result = serializer.Deserialize<PromoProductsResponse>(response);
+
+            // Calculate pages
+            howManyPages = (int)Math.Ceiling((double)result.TotalCount / (double)BalloonShopConfiguration.ProductsPerPage);
+
+            // Convert result.Items (List<ProductDto>) to DataTable
+            DataTable table = new DataTable();
+            table.Columns.Add("ProductId", typeof(int));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Description", typeof(string));
+            table.Columns.Add("Price", typeof(decimal));
+            table.Columns.Add("ImageUrl", typeof(string));
+            table.Columns.Add("Thumbnail", typeof(string));
+            table.Columns.Add("PromoFront", typeof(bool));
+            table.Columns.Add("PromoDept", typeof(bool));
+
+            foreach (var item in result.Items)
+            {
+                table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.Image, item.Thumbnail, item.PromoFront, item.PromoDept);
+            }
+            return table;
+        }
+    }
 }
+
+public class PromoProductsResponse
+{
+    public List<ProductDto> Items { get; set; }
+    public int TotalCount { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+
+    public PromoProductsResponse()
+    {
+        Items = new List<ProductDto>();
+    }
+}
+
 
 public class DepartmentDto
 {
@@ -74,17 +126,24 @@ public class DepartmentDto
     public string Description { get; set; }
 }
 
-public class CategoryDto { 
+public class CategoryDto
+{
     public int CategoryID { get; set; }
     public int DepartmentID { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 }
 
-public class ProductDto { 
-    public int ProductID { get; set; }
+public class ProductDto
+{
+    public int Id { get; set; } //introduce to handle new database structure
+    public int ProductID
+    {
+        get { return Id; }
+        set { Id = value; }
+    }
     public string Name { get; set; }
-    public string Description { get; set; } 
+    public string Description { get; set; }
     public decimal Price { get; set; }
     public string Thumbnail { get; set; }
     public string Image { get; set; }
