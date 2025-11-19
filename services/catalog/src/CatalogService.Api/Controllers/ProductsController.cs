@@ -29,6 +29,14 @@ namespace CatalogService.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("promo-front")]
+        [ProducesResponseType(typeof(PagedResponse<ProductDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPromoFront([FromQuery] PromoProductsRequest request)
+        {
+            var response = await _service.GetPromoFrontAsync(request);
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(ProductDto dto)
         {

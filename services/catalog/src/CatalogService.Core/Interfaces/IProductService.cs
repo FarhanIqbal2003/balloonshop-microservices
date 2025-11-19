@@ -9,5 +9,8 @@ namespace CatalogService.Core.Interfaces
         Task<ProductDto> CreateAsync(ProductDto dto);
         Task UpdateAsync(int id, ProductDto dto);
         Task DeleteAsync(int id);
+        
+        // New method for promo front listing
+        Task<PagedResponse<ProductDto>> GetPromoFrontAsync(PromoProductsRequest request);
     }
 }

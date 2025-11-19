@@ -58,5 +58,21 @@ namespace CatalogService.Infrastructure.Services
 
             await _repo.DeleteAsync(id);
         }
+        public async Task<PagedResponse<ProductDto>> GetPromoFrontAsync(PromoProductsRequest request)
+        {
+            var (items, totalCount) = await _repo.GetPromoFrontAsync(
+                request.PageNumber, request.PageSize, request.DescriptionLength
+            );
+
+            var dtos = items.Select(p => _mapper.Map<ProductDto>(p)).ToList();
+
+            return new PagedResponse<ProductDto>
+            {
+                Items = dtos,
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+        }
     }
 }

@@ -41,5 +41,33 @@ namespace CatalogService.Infrastructure.Repositories
                 await _db.SaveChangesAsync();
             }
         }
+
+        public async Task<(IEnumerable<Product> Items, int TotalCount)> GetPromoFrontAsync(
+            int pageNumber, 
+            int pageSize, 
+            int descriptionLength)
+        {
+            var query = _db.Products.Where(p => p.PromoFront == true);
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(p => p.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Truncate descriptions here if needed
+            foreach (var product in items)
+            {
+                if (!string.IsNullOrEmpty(product.Description) && product.Description.Length > descriptionLength)
+                {
+                    product.Description = product.Description.Substring(0, descriptionLength) + "...";
+                }
+            }
+
+            return (items, totalCount);
+        }
+
+
     }
 }
