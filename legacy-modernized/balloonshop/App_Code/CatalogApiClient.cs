@@ -67,7 +67,7 @@ public static class CatalogApiClient
             return serializer.Deserialize<ProductDto>(response);
         }
     }
-    public static DataTable GetProductsOnFrontPromo(string pageNumber, int pageSize, int descriptionLength, out int howManyPages)
+    public static List<ProductDto> GetProductsOnFrontPromo(string pageNumber, int pageSize, int descriptionLength, out int howManyPages)
     {
         using (var client = new WebClient())
         {
@@ -85,22 +85,7 @@ public static class CatalogApiClient
             // Calculate pages
             howManyPages = (int)Math.Ceiling((double)result.TotalCount / (double)BalloonShopConfiguration.ProductsPerPage);
 
-            // Convert result.Items (List<ProductDto>) to DataTable
-            DataTable table = new DataTable();
-            table.Columns.Add("ProductId", typeof(int));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("Description", typeof(string));
-            table.Columns.Add("Price", typeof(decimal));
-            table.Columns.Add("ImageUrl", typeof(string));
-            table.Columns.Add("Thumbnail", typeof(string));
-            table.Columns.Add("PromoFront", typeof(bool));
-            table.Columns.Add("PromoDept", typeof(bool));
-
-            foreach (var item in result.Items)
-            {
-                table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.Image, item.Thumbnail, item.PromoFront, item.PromoDept);
-            }
-            return table;
+            return result.Items;
         }
     }
 }

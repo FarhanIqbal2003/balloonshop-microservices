@@ -143,7 +143,25 @@ public static class CatalogAccess
     // Retrieve the list of products on catalog promotion
     public static DataTable GetProductsOnFrontPromo(string pageNumber, out int howManyPages)
     {
-        return CatalogApiClient.GetProductsOnFrontPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, out howManyPages);
+        var items = CatalogApiClient.GetProductsOnFrontPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, out howManyPages);
+
+        // Convert result.Items (List<ProductDto>) to DataTable
+        DataTable table = new DataTable();
+        table.Columns.Add("ProductId", typeof(int));
+        table.Columns.Add("Name", typeof(string));
+        table.Columns.Add("Description", typeof(string));
+        table.Columns.Add("Price", typeof(decimal));
+        table.Columns.Add("ImageUrl", typeof(string));
+        table.Columns.Add("Thumbnail", typeof(string));
+        table.Columns.Add("PromoFront", typeof(bool));
+        table.Columns.Add("PromoDept", typeof(bool));
+
+        foreach (var item in items)
+        {
+            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.Image, item.Thumbnail, item.PromoFront, item.PromoDept);
+        }
+
+        return table;
     }
 
     // retrieve the list of products featured for a department
