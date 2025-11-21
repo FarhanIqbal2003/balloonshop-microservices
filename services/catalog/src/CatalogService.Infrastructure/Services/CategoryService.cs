@@ -29,6 +29,12 @@ namespace CatalogService.Core.Services
             return p == null ? null : _mapper.Map<CategoryDto>(p);
         }
 
+        public async Task<IEnumerable<CategoryDto>> GetByDepartmentAsync(int departmentId)
+        {
+            var categories = await _repository.GetByDepartmentAsync(departmentId);
+            return categories.Select(c => _mapper.Map<CategoryDto>(c));
+        }
+
         public async Task<CategoryDto> CreateAsync(CategoryDto dto)
         {
             var entity = _mapper.Map<Category>(dto);

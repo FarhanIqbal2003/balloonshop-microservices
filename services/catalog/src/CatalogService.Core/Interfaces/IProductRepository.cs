@@ -13,7 +13,8 @@ namespace CatalogService.Core.Interfaces
         Task<(IEnumerable<Product> Items, int TotalCount)> GetPromoFrontAsync(
             int pageNumber, 
             int pageSize, 
-            int descriptionLength
+            int descriptionLength,
+            int? departmentId
         );
     }
 }

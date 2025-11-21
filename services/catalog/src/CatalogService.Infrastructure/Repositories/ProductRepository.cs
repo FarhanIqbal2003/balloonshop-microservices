@@ -45,9 +45,20 @@ namespace CatalogService.Infrastructure.Repositories
         public async Task<(IEnumerable<Product> Items, int TotalCount)> GetPromoFrontAsync(
             int pageNumber, 
             int pageSize, 
-            int descriptionLength)
+            int descriptionLength,
+            int? departmentId)
         {
-            var query = _db.Products.Where(p => p.PromoFront == true);
+            IQueryable<Product> query;
+
+            if (departmentId.HasValue)
+            {
+                query = _db.Products.Where(p => p.PromoDept == true 
+                && p.Categories.Any(c => c.DepartmentId == departmentId.Value));
+            }
+            else
+            {
+                query = _db.Products.Where(p => p.PromoFront == true);
+            }
             var totalCount = await query.CountAsync();
 
             var items = await query

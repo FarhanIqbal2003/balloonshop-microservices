@@ -29,6 +29,18 @@ namespace CatalogService.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("department/{departmentId:int}")]
+        public async Task<IActionResult> GetByDepartment(int departmentId)
+        {
+            var result = await _service.GetByDepartmentAsync(departmentId);
+
+            if (result == null || !result.Any())
+                return NotFound("No categories found for this department.");
+
+            return Ok(result);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Create(CategoryDto dto)
         {

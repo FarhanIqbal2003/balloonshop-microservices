@@ -61,7 +61,7 @@ namespace CatalogService.Infrastructure.Services
         public async Task<PagedResponse<ProductDto>> GetPromoFrontAsync(PromoProductsRequest request)
         {
             var (items, totalCount) = await _repo.GetPromoFrontAsync(
-                request.PageNumber, request.PageSize, request.DescriptionLength
+                request.PageNumber, request.PageSize, request.DescriptionLength, request.DepartmentId
             );
 
             var dtos = items.Select(p => _mapper.Map<ProductDto>(p)).ToList();

@@ -54,6 +54,20 @@ public static class CatalogApiClient
             return serializer.Deserialize<CategoryDto>(response);
         }
     }
+    public static List<CategoryDto> GetCategoriesInDepartment(string departmentId)
+    {
+        using (var client = new WebClient())
+        {
+            client.BaseAddress = _baseUrl;
+
+            string url = "api/v1/categories/department/"+ departmentId;
+            string response = client.DownloadString(url);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<List<CategoryDto>>(response);
+        }
+    }
+
     public static ProductDto GetProductById(int id)
     {
         using (var client = new WebClient())
@@ -67,14 +81,19 @@ public static class CatalogApiClient
             return serializer.Deserialize<ProductDto>(response);
         }
     }
-    public static List<ProductDto> GetProductsOnFrontPromo(string pageNumber, int pageSize, int descriptionLength, out int howManyPages)
+    public static List<ProductDto> GetProductsOnPromo(string pageNumber, int pageSize, int descriptionLength, int? departmentId, out int howManyPages)
     {
         using (var client = new WebClient())
         {
             client.BaseAddress = _baseUrl;
             client.Headers[HttpRequestHeader.ContentType] = "application/json";
 
-            string url = "api/v1/Products/promo-front?pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&descriptionLength=" + descriptionLength;
+            string url = "api/v1/Products/promo?pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&descriptionLength=" + descriptionLength;
+
+            if (departmentId.HasValue)
+            {
+                url += "&departmentId=" + departmentId.Value;
+            }
 
             string response = client.DownloadString(url);
 
@@ -103,7 +122,6 @@ public class PromoProductsResponse
     }
 }
 
-
 public class DepartmentDto
 {
     public int DepartmentID { get; set; }
@@ -131,7 +149,7 @@ public class ProductDto
     public string Description { get; set; }
     public decimal Price { get; set; }
     public string Thumbnail { get; set; }
-    public string Image { get; set; }
+    public string ImageUrl { get; set; }
     public bool PromoFront { get; set; }
     public bool PromoDept { get; set; }
 }

@@ -6,6 +6,7 @@ namespace CatalogService.Core.Interfaces
     {
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category?> GetByIdAsync(int id);
+        Task<IEnumerable<Category>> GetByDepartmentAsync(int departmentId);
         Task AddAsync(Category category);
         Task UpdateAsync(Category category);
         Task DeleteAsync(int id);

@@ -29,7 +29,7 @@ namespace CatalogService.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("promo-front")]
+        [HttpGet("promo")]
         [ProducesResponseType(typeof(PagedResponse<ProductDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPromoFront([FromQuery] PromoProductsRequest request)
         {

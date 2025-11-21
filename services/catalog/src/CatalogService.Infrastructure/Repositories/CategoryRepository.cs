@@ -20,6 +20,13 @@ namespace CatalogService.Infrastructure.Repositories
         public async Task<Category?> GetByIdAsync(int id) =>
             await _db.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.CategoryId == id);
 
+        public async Task<IEnumerable<Category>> GetByDepartmentAsync(int departmentId)
+        {
+            return await _db.Categories
+                .Where(c => c.DepartmentId == departmentId)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Category category)
         {
             _db.Categories.Add(category);

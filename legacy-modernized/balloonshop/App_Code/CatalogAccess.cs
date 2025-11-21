@@ -115,7 +115,7 @@ public static class CatalogAccess
             details.Description = items.Description;
             details.Price = items.Price;
             details.Thumbnail = items.Thumbnail;
-            details.Image = items.Image;
+            details.Image = items.ImageUrl;
             details.PromoFront = items.PromoFront;
             details.PromoDept = items.PromoDept;
         }
@@ -126,24 +126,26 @@ public static class CatalogAccess
     // retrieve the list of categories in a department
     public static DataTable GetCategoriesInDepartment(string departmentId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetCategoriesInDepartment";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentID";
-        param.Value = departmentId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure
-        return GenericDataAccess.ExecuteSelectCommand(comm);
+        var items = CatalogApiClient.GetCategoriesInDepartment(departmentId); // returns List<DepartmentDto>
+
+        // convert list to DataTable (so UI pages remain unchanged)
+        var dt = new DataTable();
+        dt.Columns.Add("CategoryID", typeof(int));
+        dt.Columns.Add("Name", typeof(string));
+        dt.Columns.Add("Description", typeof(string));
+
+        foreach (var item in items)
+        {
+            dt.Rows.Add(item.CategoryID, item.Name, item.Description);
+        }
+
+        return dt;
     }
 
     // Retrieve the list of products on catalog promotion
     public static DataTable GetProductsOnFrontPromo(string pageNumber, out int howManyPages)
     {
-        var items = CatalogApiClient.GetProductsOnFrontPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, out howManyPages);
+        var items = CatalogApiClient.GetProductsOnPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, out howManyPages);
 
         // Convert result.Items (List<ProductDto>) to DataTable
         DataTable table = new DataTable();
@@ -158,7 +160,7 @@ public static class CatalogAccess
 
         foreach (var item in items)
         {
-            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.Image, item.Thumbnail, item.PromoFront, item.PromoDept);
+            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.ImageUrl, item.Thumbnail, item.PromoFront, item.PromoDept);
         }
 
         return table;
@@ -168,48 +170,25 @@ public static class CatalogAccess
     public static DataTable GetProductsOnDeptPromo
     (string departmentId, string pageNumber, out int howManyPages)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetProductsOnDeptPromo";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentID";
-        param.Value = departmentId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@DescriptionLength";
-        param.Value = BalloonShopConfiguration.ProductDescriptionLength;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PageNumber";
-        param.Value = pageNumber;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductsPerPage";
-        param.Value = BalloonShopConfiguration.ProductsPerPage;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@HowManyProducts";
-        param.Direction = ParameterDirection.Output;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure and save the results in a DataTable
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
-        // calculate how many pages of products and set the out parameter
-        int howManyProducts = Int32.Parse(comm.Parameters["@HowManyProducts"].Value.ToString());
-        howManyPages = (int)Math.Ceiling((double)howManyProducts /
-                       (double)BalloonShopConfiguration.ProductsPerPage);
-        // return the page of products
-        return table;
+        var items = CatalogApiClient.GetProductsOnPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, int.Parse(departmentId), out howManyPages);
+
+        // Convert result.Items (List<ProductDto>) to DataTable
+        DataTable table = new DataTable();
+        table.Columns.Add("ProductId", typeof(int));
+        table.Columns.Add("Name", typeof(string));
+        table.Columns.Add("Description", typeof(string));
+        table.Columns.Add("Price", typeof(decimal));
+        table.Columns.Add("ImageUrl", typeof(string));
+        table.Columns.Add("Thumbnail", typeof(string));
+        table.Columns.Add("PromoFront", typeof(bool));
+        table.Columns.Add("PromoDept", typeof(bool));
+
+        foreach (var item in items)
+        {
+            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.ImageUrl, item.Thumbnail, item.PromoFront, item.PromoDept);
+        }
+
+        return table;        
     }
 
     // retrieve the list of products in a category
