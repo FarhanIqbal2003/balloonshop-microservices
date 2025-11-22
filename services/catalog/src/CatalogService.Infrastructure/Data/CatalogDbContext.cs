@@ -54,6 +54,57 @@ namespace CatalogService.Infrastructure.Data
             .HasMany(p => p.Categories)
             .WithMany(c => c.Products)
             .UsingEntity(j => j.ToTable("ProductCategories"));
+        
+
+        // Attribute
+            modelBuilder.Entity<AttributeEntity>(b =>
+            {
+                b.ToTable("Attribute");
+                b.HasKey(x => x.AttributeID);
+                b.Property(x => x.AttributeID).HasColumnName("AttributeID");
+                b.Property(x => x.Name)
+                 .HasMaxLength(100)
+                 .IsRequired()
+                 .HasColumnName("Name");
+                b.HasMany(a => a.AttributeValues)
+                 .WithOne(av => av.Attribute!)
+                 .HasForeignKey(av => av.AttributeID)
+                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // AttributeValue
+            modelBuilder.Entity<AttributeValue>(b =>
+            {
+                b.ToTable("AttributeValue");
+                b.HasKey(x => x.AttributeValueID);
+                b.Property(x => x.AttributeValueID).HasColumnName("AttributeValueID");
+                b.Property(x => x.AttributeID).HasColumnName("AttributeID");
+                b.Property(x => x.Value)
+                 .HasMaxLength(100)
+                 .IsRequired()
+                 .HasColumnName("Value");
+            });
+
+            // ProductAttributeValue (bridge)
+            modelBuilder.Entity<ProductAttributeValue>(b =>
+            {
+                b.ToTable("ProductAttributeValue");
+                // composite primary key
+                b.HasKey(x => new { x.ProductID, x.AttributeValueID });
+
+                b.Property(x => x.ProductID).HasColumnName("ProductID");
+                b.Property(x => x.AttributeValueID).HasColumnName("AttributeValueID");
+
+                b.HasOne(pav => pav.AttributeValue)
+                 .WithMany(av => av.ProductAttributeValues)
+                 .HasForeignKey(pav => pav.AttributeValueID)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+                // If you have ProductEntity in the model, configure the FK here:
+                // b.HasOne(pav => pav.Product)
+                //  .WithMany(p => p.ProductAttributeValues)
+                //  .HasForeignKey(pav => pav.ProductID);
+            });          
         }
     }
 }
