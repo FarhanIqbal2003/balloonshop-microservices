@@ -10,6 +10,9 @@ namespace CatalogService.Infrastructure.Data
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<Category> Categories { get; set; } = default!;
         public DbSet<Department> Departments { get; set; } = default!;
+        public DbSet<AttributeEntity> Attributes { get; set; } = default!;
+        public DbSet<AttributeValue> AttributeValues { get; set; } = default!;
+        public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

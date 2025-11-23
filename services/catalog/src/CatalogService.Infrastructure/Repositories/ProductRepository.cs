@@ -78,7 +78,18 @@ namespace CatalogService.Infrastructure.Repositories
 
             return (items, totalCount);
         }
+        public async Task<IEnumerable<AttributeValue>> GetProductAttributes(int productId)
+        {
+            var result = await _db.AttributeValues
+                .Include(av => av.Attribute) // join Attribute table
+                .Where(av => av.ProductAttributeValues
+                    .Any(pav => pav.ProductID == productId)
+                    //&& (av => av.Attribute != null)
+                    )
+                .OrderBy(av => av.Attribute.Name)
+                .ToListAsync();
 
-
+            return result;
+        }
     }
 }

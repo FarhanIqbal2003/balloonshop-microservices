@@ -16,5 +16,6 @@ namespace CatalogService.Core.Interfaces
             int descriptionLength,
             int? departmentId
         );
+        Task<IEnumerable<AttributeValue>> GetProductAttributes(int productId);
     }
 }
