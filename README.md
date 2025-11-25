@@ -76,7 +76,7 @@ balloonshop-microservices/
 
 | Area | Technology |
 |------|-------------|
-| **Legacy** | ASP.NET 4.x, Web Forms, ADO.NET, SQL Server |
+| **Legacy** | ASP.NET 3.x, Web Forms, ADO.NET, SQL Server |
 | **New Services** | .NET 8 Web API, EF Core, REST, Docker |
 | **Communication** | HTTP (initial), RabbitMQ (later) |
 | **Gateway** | YARP / Ocelot |
