@@ -82,11 +82,9 @@ namespace CatalogService.Infrastructure.Repositories
         {
             var result = await _db.AttributeValues
                 .Include(av => av.Attribute) // join Attribute table
-                .Where(av => av.ProductAttributeValues
-                    .Any(pav => pav.ProductID == productId)
-                    //&& (av => av.Attribute != null)
+                .Where(av => av.ProductAttributeValues.Any(pav => pav.ProductID == productId)
                     )
-                .OrderBy(av => av.Attribute.Name)
+                .OrderBy(av => av.Attribute!.Name)
                 .ToListAsync();
 
             return result;
