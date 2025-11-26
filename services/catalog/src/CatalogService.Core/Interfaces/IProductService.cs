@@ -12,5 +12,6 @@ namespace CatalogService.Core.Interfaces
         
         // New method for promo front listing
         Task<PagedResponse<ProductDto>> GetPromoFrontAsync(PromoProductsRequest request);
+        Task<IEnumerable<AttributeValueDto>> GetProductAttributes(int productId);
     }
 }

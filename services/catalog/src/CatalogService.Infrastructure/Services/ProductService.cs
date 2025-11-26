@@ -74,5 +74,10 @@ namespace CatalogService.Infrastructure.Services
                 PageSize = request.PageSize
             };
         }
+        public async Task<IEnumerable<AttributeValueDto>> GetProductAttributes(int productId)
+        {
+            var attributeValues = await _repo.GetProductAttributes(productId);
+            return attributeValues.Select(p => _mapper.Map<AttributeValueDto>(p));
+        }
     }
 }
