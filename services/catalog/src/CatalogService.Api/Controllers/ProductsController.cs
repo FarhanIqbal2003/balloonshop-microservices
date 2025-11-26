@@ -37,6 +37,20 @@ namespace CatalogService.Api.Controllers
             return Ok(response);
         }
 
+        // GET: api/products/{productId}/attributes
+        [HttpGet("{productId}/attributes")]
+        public async Task<IActionResult> GetProductAttributes(int productId)
+        {
+            var attributes = await _service.GetProductAttributes(productId);
+
+            if (attributes == null || !attributes.Any())
+            {
+                return NotFound($"No attributes found for product ID: {productId}");
+            }
+
+            return Ok(attributes);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(ProductDto dto)
         {
