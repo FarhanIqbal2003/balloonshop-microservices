@@ -107,7 +107,7 @@ public static class CatalogApiClient
             return result.Items;
         }
     }
-    public static List<AttributeValueDto> GetProductsAttributes(int productId)
+    public static List<AttributeValueDto> GetProductsAttributes(string productId)
     {
         using (var client = new WebClient())
         {
@@ -171,7 +171,7 @@ public class ProductDto
 
 public class AttributeValueDto
 {
+    public string AttributeName { get; set; }
     public int AttributeValueID { get; set; }
-    public int AttributeID { get; set; }
-    public string Value { get; set; }
+    public string AttributeValue { get; set; }
 }

@@ -243,18 +243,20 @@ public static class CatalogAccess
     // Retrieve the list of product attributes 
     public static DataTable GetProductAttributes(string productId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetProductAttributeValues";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure and return the results
-        return GenericDataAccess.ExecuteSelectCommand(comm);
+        var items = CatalogApiClient.GetProductsAttributes(productId);
+
+        // Convert result.Items (List<AttributeValueDto>) to DataTable
+        DataTable table = new DataTable();
+        table.Columns.Add("AttributeName", typeof(string));
+        table.Columns.Add("AttributeValueId", typeof(int));
+        table.Columns.Add("AttributeValue", typeof(string));
+        
+        foreach (var item in items)
+        {
+            table.Rows.Add(item.AttributeName, item.AttributeValueID, item.AttributeValue);
+        }
+
+        return table;
     }
 
     // Search the product catalog
