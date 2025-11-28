@@ -107,6 +107,21 @@ public static class CatalogApiClient
             return result.Items;
         }
     }
+    public static List<AttributeValueDto> GetProductsAttributes(int productId)
+    {
+        using (var client = new WebClient())
+        {
+            client.BaseAddress = _baseUrl;
+            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+            string url = "api/v1/Products/" + productId + "/attributes";
+
+            string response = client.DownloadString(url);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<List<AttributeValueDto>>(response);
+        }
+    }
 }
 
 public class PromoProductsResponse
@@ -152,4 +167,11 @@ public class ProductDto
     public string ImageUrl { get; set; }
     public bool PromoFront { get; set; }
     public bool PromoDept { get; set; }
+}
+
+public class AttributeValueDto
+{
+    public int AttributeValueID { get; set; }
+    public int AttributeID { get; set; }
+    public string Value { get; set; }
 }
