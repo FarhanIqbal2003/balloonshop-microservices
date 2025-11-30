@@ -81,19 +81,24 @@ public static class CatalogApiClient
             return serializer.Deserialize<ProductDto>(response);
         }
     }
-    public static List<ProductDto> GetProductsOnPromo(string pageNumber, int pageSize, int descriptionLength, int? departmentId, out int howManyPages)
+    public static List<ProductDto> GetProducts(string pageNumber, int pageSize, int descriptionLength, int? departmentId,
+        int? categoryId, out int howManyPages)
     {
         using (var client = new WebClient())
         {
             client.BaseAddress = _baseUrl;
             client.Headers[HttpRequestHeader.ContentType] = "application/json";
 
-            string url = "api/v1/Products/promo?pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&descriptionLength=" + descriptionLength;
+            string url = "api/v1/Products/filter?pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&descriptionLength=" + descriptionLength;
 
             if (departmentId.HasValue)
             {
                 url += "&departmentId=" + departmentId.Value;
             }
+            if (categoryId.HasValue)
+            {
+                url += "&categoryId=" + categoryId.Value;
+            }            
 
             string response = client.DownloadString(url);
 

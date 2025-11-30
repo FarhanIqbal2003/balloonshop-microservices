@@ -145,7 +145,7 @@ public static class CatalogAccess
     // Retrieve the list of products on catalog promotion
     public static DataTable GetProductsOnFrontPromo(string pageNumber, out int howManyPages)
     {
-        var items = CatalogApiClient.GetProductsOnPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, out howManyPages);
+        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, null, out howManyPages);
 
         // Convert result.Items (List<ProductDto>) to DataTable
         DataTable table = new DataTable();
@@ -170,7 +170,7 @@ public static class CatalogAccess
     public static DataTable GetProductsOnDeptPromo
     (string departmentId, string pageNumber, out int howManyPages)
     {
-        var items = CatalogApiClient.GetProductsOnPromo(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, int.Parse(departmentId), out howManyPages);
+        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, int.Parse(departmentId), null, out howManyPages);
 
         // Convert result.Items (List<ProductDto>) to DataTable
         DataTable table = new DataTable();
@@ -195,48 +195,24 @@ public static class CatalogAccess
     public static DataTable GetProductsInCategory
     (string categoryId, string pageNumber, out int howManyPages)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetProductsInCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@CategoryID";
-        param.Value = categoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@DescriptionLength";
-        param.Value = BalloonShopConfiguration.ProductDescriptionLength;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PageNumber";
+        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, int.Parse(categoryId), out howManyPages);
 
-        param.Value = pageNumber;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductsPerPage";
-        param.Value = BalloonShopConfiguration.ProductsPerPage;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@HowManyProducts";
-        param.Direction = ParameterDirection.Output;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure and save the results in a DataTable
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
-        // calculate how many pages of products and set the out parameter
-        int howManyProducts = Int32.Parse(comm.Parameters["@HowManyProducts"].Value.ToString());
-        howManyPages = (int)Math.Ceiling((double)howManyProducts /
-                       (double)BalloonShopConfiguration.ProductsPerPage);
-        // return the page of products
+        // Convert result.Items (List<ProductDto>) to DataTable
+        DataTable table = new DataTable();
+        table.Columns.Add("ProductId", typeof(int));
+        table.Columns.Add("Name", typeof(string));
+        table.Columns.Add("Description", typeof(string));
+        table.Columns.Add("Price", typeof(decimal));
+        table.Columns.Add("ImageUrl", typeof(string));
+        table.Columns.Add("Thumbnail", typeof(string));
+        table.Columns.Add("PromoFront", typeof(bool));
+        table.Columns.Add("PromoDept", typeof(bool));
+
+        foreach (var item in items)
+        {
+            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.ImageUrl, item.Thumbnail, item.PromoFront, item.PromoDept);
+        }
+
         return table;
     }
 
