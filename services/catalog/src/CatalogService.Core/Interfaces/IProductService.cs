@@ -11,7 +11,7 @@ namespace CatalogService.Core.Interfaces
         Task DeleteAsync(int id);
         
         // New method for promo front listing
-        Task<PagedResponse<ProductDto>> GetPromoFrontAsync(PromoProductsRequest request);
+        Task<PagedResponse<ProductDto>> GetProductsAsync(ProductsRequest request);
         Task<IEnumerable<AttributeValueResponse>> GetProductAttributes(int productId);
     }
 }

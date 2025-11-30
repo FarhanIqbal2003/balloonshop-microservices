@@ -42,11 +42,12 @@ namespace CatalogService.Infrastructure.Repositories
             }
         }
 
-        public async Task<(IEnumerable<Product> Items, int TotalCount)> GetPromoFrontAsync(
+        public async Task<(IEnumerable<Product> Items, int TotalCount)> GetProductsAsync(
             int pageNumber, 
             int pageSize, 
             int descriptionLength,
-            int? departmentId)
+            int? departmentId,
+            int? categoryId)
         {
             IQueryable<Product> query;
 
@@ -54,6 +55,10 @@ namespace CatalogService.Infrastructure.Repositories
             {
                 query = _db.Products.Where(p => p.PromoDept == true 
                 && p.Categories.Any(c => c.DepartmentId == departmentId.Value));
+            }
+            else if (categoryId.HasValue)
+            {
+                query = _db.Products.Where(p => p.Categories.Any(c => c.CategoryId == categoryId.Value));
             }
             else
             {

@@ -29,11 +29,11 @@ namespace CatalogService.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("promo")]
+        [HttpGet("filter")]
         [ProducesResponseType(typeof(PagedResponse<ProductDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPromoFront([FromQuery] PromoProductsRequest request)
+        public async Task<IActionResult> GetProducts([FromQuery] ProductsRequest request)
         {
-            var response = await _service.GetPromoFrontAsync(request);
+            var response = await _service.GetProductsAsync(request);
             return Ok(response);
         }
 

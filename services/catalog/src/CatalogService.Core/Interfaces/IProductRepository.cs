@@ -10,11 +10,12 @@ namespace CatalogService.Core.Interfaces
         Task UpdateAsync(Product product);
         Task DeleteAsync(int id);
         // New method for promo-front products
-        Task<(IEnumerable<Product> Items, int TotalCount)> GetPromoFrontAsync(
+        Task<(IEnumerable<Product> Items, int TotalCount)> GetProductsAsync(
             int pageNumber, 
             int pageSize, 
             int descriptionLength,
-            int? departmentId
+            int? departmentId,
+            int? categoryId
         );
         Task<IEnumerable<AttributeValue>> GetProductAttributes(int productId);
     }
