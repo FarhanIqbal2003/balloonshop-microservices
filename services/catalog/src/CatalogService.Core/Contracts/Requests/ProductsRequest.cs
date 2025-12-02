@@ -6,4 +6,6 @@ public class ProductsRequest
 
     public int? DepartmentId { get; set; }
     public int? CategoryId { get; set; }
+    public string? Search { get; set; }
+    public bool AllWords { get; set; } = false;
 }

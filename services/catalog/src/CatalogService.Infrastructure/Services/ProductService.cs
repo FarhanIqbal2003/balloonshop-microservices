@@ -61,7 +61,8 @@ namespace CatalogService.Infrastructure.Services
         public async Task<PagedResponse<ProductDto>> GetProductsAsync(ProductsRequest request)
         {
             var (items, totalCount) = await _repo.GetProductsAsync(
-                request.PageNumber, request.PageSize, request.DescriptionLength, request.DepartmentId, request.CategoryId
+                request.PageNumber, request.PageSize, request.DescriptionLength, request.DepartmentId, 
+                request.CategoryId, request.Search, request.AllWords
             );
 
             var dtos = items.Select(p => _mapper.Map<ProductDto>(p)).ToList();

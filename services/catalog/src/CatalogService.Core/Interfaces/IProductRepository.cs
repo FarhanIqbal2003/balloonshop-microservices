@@ -15,7 +15,9 @@ namespace CatalogService.Core.Interfaces
             int pageSize, 
             int descriptionLength,
             int? departmentId,
-            int? categoryId
+            int? categoryId,
+            string? search,
+            bool allWords
         );
         Task<IEnumerable<AttributeValue>> GetProductAttributes(int productId);
     }

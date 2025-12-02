@@ -47,7 +47,9 @@ namespace CatalogService.Infrastructure.Repositories
             int pageSize, 
             int descriptionLength,
             int? departmentId,
-            int? categoryId)
+            int? categoryId,
+            string? search,
+            bool allWords)
         {
             IQueryable<Product> query;
 
@@ -60,10 +62,40 @@ namespace CatalogService.Infrastructure.Repositories
             {
                 query = _db.Products.Where(p => p.Categories.Any(c => c.CategoryId == categoryId.Value));
             }
+            // else if (!string.IsNullOrEmpty(search))
+            // {
+            //     var searchTerms = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                
+            //     if (allWords)
+            //     {
+            //         foreach (var term in searchTerms)
+            //         {
+                        // query = query.Where(p => 
+                        //     p.Name.Contains(term) || 
+                        //     (p.Description != null && p.Description.Contains(term))
+                        // );
+                //     }
+                // }
+                // else
+                // {
+                    // query = query.Where(p => 
+                    //     p.Name.Contains(search) || 
+                    //     (p.Description != null && p.Description.Contains(search))
+                    // );
+              //  }
+                
+
+                // // Ranking / relevance ordering
+                // query = query.OrderByDescending(p =>
+                //     searchTerms.Count(term =>
+                //     p.Name.Contains(term) ||
+                //     p.Description.Contains(term)));
+            //}
             else
             {
                 query = _db.Products.Where(p => p.PromoFront == true);
             }
+
             var totalCount = await query.CountAsync();
 
             var items = await query
