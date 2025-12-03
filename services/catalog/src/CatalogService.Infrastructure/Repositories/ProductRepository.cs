@@ -51,7 +51,7 @@ namespace CatalogService.Infrastructure.Repositories
             string? search,
             bool allWords)
         {
-            IQueryable<Product> query;
+            IQueryable<Product> query = _db.Products.AsQueryable();
 
             if (departmentId.HasValue)
             {
@@ -62,35 +62,35 @@ namespace CatalogService.Infrastructure.Repositories
             {
                 query = _db.Products.Where(p => p.Categories.Any(c => c.CategoryId == categoryId.Value));
             }
-            // else if (!string.IsNullOrEmpty(search))
-            // {
-            //     var searchTerms = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+             else if (!string.IsNullOrEmpty(search))
+             {
+                 var searchTerms = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 
-            //     if (allWords)
-            //     {
-            //         foreach (var term in searchTerms)
-            //         {
-                        // query = query.Where(p => 
-                        //     p.Name.Contains(term) || 
-                        //     (p.Description != null && p.Description.Contains(term))
-                        // );
-                //     }
-                // }
-                // else
-                // {
-                    // query = query.Where(p => 
-                    //     p.Name.Contains(search) || 
-                    //     (p.Description != null && p.Description.Contains(search))
-                    // );
-              //  }
+                if (allWords)
+                {
+                    foreach (var term in searchTerms)
+                    {
+                        query = query.Where(p => 
+                            p.Name.Contains(term) || 
+                            (p.Description != null && p.Description.Contains(term))
+                        );
+                    }
+                }
+                else
+                {
+                    query = query.Where(p => 
+                        p.Name.Contains(search) || 
+                        (p.Description != null && p.Description.Contains(search))
+                    );
+               }
                 
 
-                // // Ranking / relevance ordering
-                // query = query.OrderByDescending(p =>
-                //     searchTerms.Count(term =>
-                //     p.Name.Contains(term) ||
-                //     p.Description.Contains(term)));
-            //}
+                // Ranking / relevance ordering
+                query = query.OrderByDescending(p =>
+                    searchTerms.Count(term =>
+                    p.Name.Contains(term) ||
+                    p.Description.Contains(term)));
+            }
             else
             {
                 query = _db.Products.Where(p => p.PromoFront == true);
