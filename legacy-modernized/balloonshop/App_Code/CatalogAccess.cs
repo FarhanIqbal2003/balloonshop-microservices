@@ -145,7 +145,7 @@ public static class CatalogAccess
     // Retrieve the list of products on catalog promotion
     public static DataTable GetProductsOnFrontPromo(string pageNumber, out int howManyPages)
     {
-        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, null, out howManyPages);
+        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, null, null, false, out howManyPages);
 
         // Convert result.Items (List<ProductDto>) to DataTable
         DataTable table = new DataTable();
@@ -170,7 +170,7 @@ public static class CatalogAccess
     public static DataTable GetProductsOnDeptPromo
     (string departmentId, string pageNumber, out int howManyPages)
     {
-        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, int.Parse(departmentId), null, out howManyPages);
+        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, int.Parse(departmentId), null, null, false, out howManyPages);
 
         // Convert result.Items (List<ProductDto>) to DataTable
         DataTable table = new DataTable();
@@ -195,7 +195,7 @@ public static class CatalogAccess
     public static DataTable GetProductsInCategory
     (string categoryId, string pageNumber, out int howManyPages)
     {
-        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, int.Parse(categoryId), out howManyPages);
+        var items = CatalogApiClient.GetProducts(pageNumber, BalloonShopConfiguration.ProductsPerPage, BalloonShopConfiguration.ProductDescriptionLength, null, int.Parse(categoryId), null, false, out howManyPages);
 
         // Convert result.Items (List<ProductDto>) to DataTable
         DataTable table = new DataTable();
@@ -239,69 +239,33 @@ public static class CatalogAccess
     public static DataTable Search(string searchString, string allWords,
     string pageNumber, out int howManyPages)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "SearchCatalog";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DescriptionLength";
-        param.Value = BalloonShopConfiguration.ProductDescriptionLength;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@AllWords";
-        param.Value = allWords.ToUpper() == "TRUE" ? "1" : "0";
-        param.DbType = DbType.Byte;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PageNumber";
-        param.Value = pageNumber;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductsPerPage";
-        param.Value = BalloonShopConfiguration.ProductsPerPage;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@HowManyResults";
-        param.Direction = ParameterDirection.Output;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
+        var items = CatalogApiClient.GetProducts(
+            pageNumber, 
+            BalloonShopConfiguration.ProductsPerPage, 
+            BalloonShopConfiguration.ProductDescriptionLength, 
+            null,
+            null,
+            searchString,
+            bool.Parse(allWords),
+            out howManyPages
+            );
 
-        // define the maximum number of words
-        int howManyWords = 5;
-        // transform search string into array of words
-        string[] words = Regex.Split(searchString, "[^a-zA-Z0-9]+");
+        // Convert result.Items (List<ProductDto>) to DataTable
+        DataTable table = new DataTable();
+        table.Columns.Add("ProductId", typeof(int));
+        table.Columns.Add("Name", typeof(string));
+        table.Columns.Add("Description", typeof(string));
+        table.Columns.Add("Price", typeof(decimal));
+        table.Columns.Add("ImageUrl", typeof(string));
+        table.Columns.Add("Thumbnail", typeof(string));
+        table.Columns.Add("PromoFront", typeof(bool));
+        table.Columns.Add("PromoDept", typeof(bool));
 
-        // add the words as stored procedure parameters
-        int index = 1;
-        for (int i = 0; i <= words.GetUpperBound(0) && index <= howManyWords; i++)
-            // ignore short words
-            if (words[i].Length > 2)
-            {
-                // create the @Word parameters
-                param = comm.CreateParameter();
-                param.ParameterName = "@Word" + index.ToString();
-                param.Value = words[i];
-                param.DbType = DbType.String;
-                comm.Parameters.Add(param);
-                index++;
-            }
+        foreach (var item in items)
+        {
+            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.ImageUrl, item.Thumbnail, item.PromoFront, item.PromoDept);
+        }
 
-        // execute the stored procedure and save the results in a DataTable
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
-        // calculate how many pages of products and set the out parameter
-        int howManyProducts =
-      Int32.Parse(comm.Parameters["@HowManyResults"].Value.ToString());
-        howManyPages = (int)Math.Ceiling((double)howManyProducts /
-                       (double)BalloonShopConfiguration.ProductsPerPage);
-        // return the page of products
         return table;
     }
 

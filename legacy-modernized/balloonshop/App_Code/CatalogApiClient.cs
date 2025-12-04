@@ -82,14 +82,16 @@ public static class CatalogApiClient
         }
     }
     public static List<ProductDto> GetProducts(string pageNumber, int pageSize, int descriptionLength, int? departmentId,
-        int? categoryId, out int howManyPages)
+        int? categoryId, string search, bool allWords, out int howManyPages)
     {
         using (var client = new WebClient())
         {
             client.BaseAddress = _baseUrl;
             client.Headers[HttpRequestHeader.ContentType] = "application/json";
 
-            string url = "api/v1/Products/filter?pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&descriptionLength=" + descriptionLength;
+            string url = "api/v1/Products/filter?pageNumber=" + pageNumber + 
+                "&pageSize=" + pageSize + 
+                "&descriptionLength=" + descriptionLength;
 
             if (departmentId.HasValue)
             {
@@ -98,7 +100,14 @@ public static class CatalogApiClient
             if (categoryId.HasValue)
             {
                 url += "&categoryId=" + categoryId.Value;
-            }            
+            }
+
+            // Search terms
+            if (!string.IsNullOrEmpty(search))
+                url += "&search=" + Uri.EscapeDataString(search);
+
+            // All-words matching
+            url += "&allWords=" + allWords.ToString().ToLower();
 
             string response = client.DownloadString(url);
 
