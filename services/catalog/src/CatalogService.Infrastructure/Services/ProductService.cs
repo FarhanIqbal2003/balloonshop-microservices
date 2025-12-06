@@ -46,6 +46,9 @@ namespace CatalogService.Infrastructure.Services
             entity.Description = dto.Description ?? "";
             entity.Price = dto.Price;
             entity.ImageUrl = dto.ImageUrl;
+            entity.Thumbnail = dto.Thumbnail;
+            entity.PromoFront = dto.PromoFront;
+            entity.PromoDept = dto.PromoDept;
 
             await _repo.UpdateAsync(entity);
         }
