@@ -9,7 +9,7 @@ using AmazonEcs;
 public static class CatalogApiClient
 {
     private static readonly string _baseUrl = ConfigurationManager.AppSettings["CatalogServiceBaseUrl"];
-
+    #region Departments API
     public static List<DepartmentDto> GetDepartments()
     {
         using (var client = new WebClient())
@@ -41,6 +41,77 @@ public static class CatalogApiClient
             return serializer.Deserialize<DepartmentDto>(response);
         }
     }
+    public static bool CreateDepartment(DepartmentDto department)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string url = _baseUrl + "api/v1/departments";
+
+                // Serialize object to JSON
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonData = serializer.Serialize(department);
+
+                // Send POST request
+                string response = client.UploadString(url, "POST", jsonData);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    public static bool UpdateDepartment(DepartmentDto department)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                string url = _baseUrl + "api/v1/departments/" + department.DepartmentID;
+
+                // Convert object to JSON
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonData = serializer.Serialize(department);
+
+                // Upload data with PUT
+                string response = client.UploadString(url, "PUT", jsonData);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    public static bool DeleteDepartment(int departmentId)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                string url = _baseUrl + "api/v1/departments/" + departmentId;
+
+                // WebClient does not have a direct Delete method with response,
+                // so you can use UploadString with empty body and "DELETE" verb
+                client.UploadString(url, "DELETE", "");
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    #endregion Departments API
+    #region Categories
     public static CategoryDto GetCategoryById(int id)
     {
         using (var client = new WebClient())
@@ -67,7 +138,77 @@ public static class CatalogApiClient
             return serializer.Deserialize<List<CategoryDto>>(response);
         }
     }
+    public static bool CreateCategory(CategoryDto category)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string url = _baseUrl + "api/v1/categories";
 
+                // Serialize object to JSON
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonData = serializer.Serialize(category);
+
+                // Send POST request
+                string response = client.UploadString(url, "POST", jsonData);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    public static bool UpdateCategory(CategoryDto category)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                string url = _baseUrl + "api/v1/categories/" + category.CategoryID;
+
+                // Convert object to JSON
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonData = serializer.Serialize(category);
+
+                // Upload data with PUT
+                string response = client.UploadString(url, "PUT", jsonData);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    public static bool DeleteCategory(int categoryId)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                string url = _baseUrl + "api/v1/categories/" + categoryId;
+
+                // WebClient does not have a direct Delete method with response,
+                // so you can use UploadString with empty body and "DELETE" verb
+                client.UploadString(url, "DELETE", "");
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    #endregion Categories    
+    #region Products
     public static ProductDto GetProductById(int id)
     {
         using (var client = new WebClient())
@@ -121,6 +262,30 @@ public static class CatalogApiClient
             return result.Items;
         }
     }
+    public static bool CreateProduct(ProductDto product)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string url = _baseUrl + "api/v1/products";
+
+                // Serialize object to JSON
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonData = serializer.Serialize(product);
+
+                // Send POST request
+                string response = client.UploadString(url, "POST", jsonData);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
     public static List<AttributeValueDto> GetProductsAttributes(string productId)
     {
         using (var client = new WebClient())
@@ -136,6 +301,7 @@ public static class CatalogApiClient
             return serializer.Deserialize<List<AttributeValueDto>>(response);
         }
     }
+    #endregion Products
 }
 
 public class PromoProductsResponse

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 /// <summary>
 /// Wraps department details data
@@ -272,243 +273,65 @@ public static class CatalogAccess
     // Update department details
     public static bool UpdateDepartment(string id, string name, string description)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogUpdateDepartment";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentId";
-        param.Value = id;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentName";
-        param.Value = name;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentDescription";
-        param.Value = description;
-        param.DbType = DbType.String;
-        param.Size = 1000;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.UpdateDepartment(new DepartmentDto() { DepartmentID = int.Parse(id), Description = description, Name = name });        
     }
 
     // Delete department
     public static bool DeleteDepartment(string id)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogDeleteDepartment";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentId";
-        param.Value = id;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure; an error will be thrown by the
-        // database if the department has related categories, in which case
-        // it is not deleted
-        int result = -1;
-        try
-        {
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success
-        return (result != -1);
+        return CatalogApiClient.DeleteDepartment(int.Parse(id));
     }
 
     // Add a new department
     public static bool AddDepartment(string name, string description)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogAddDepartment";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentName";
-        param.Value = name;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentDescription";
-        param.Value = description;
-        param.DbType = DbType.String;
-        param.Size = 1000;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.CreateDepartment(new DepartmentDto() { Description = description, Name = name });
     }
 
     // Create a new Category
     public static bool CreateCategory(string departmentId,
      string name, string description)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogCreateCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@DepartmentID";
-        param.Value = departmentId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@CategoryName";
-        param.Value = name;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@CategoryDescription";
-        param.Value = description;
-        param.DbType = DbType.String;
-        param.Size = 1000;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.CreateCategory(new CategoryDto() { DepartmentID = int.Parse(departmentId), Name = name, Description = description});        
     }
-
 
     // Update category details
     public static bool UpdateCategory(string id, string name, string description)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogUpdateCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@CategoryId";
-        param.Value = id;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@CategoryName";
-        param.Value = name;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@CategoryDescription";
-        param.Value = description;
-        param.DbType = DbType.String;
-        param.Size = 1000;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.UpdateCategory(new CategoryDto() { 
+            CategoryID = int.Parse(id),
+            Name = name,
+            Description = description });
     }
-
 
     // Delete Category
     public static bool DeleteCategory(string id)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogDeleteCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@CategoryId";
-        param.Value = id;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure; an error will be thrown by the
-        // database if the Category has related categories, in which case
-        // it is not deleted
-        int result = -1;
-        try
-        {
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success
-        return (result != -1);
+        return CatalogApiClient.DeleteCategory(int.Parse(id));
     }
 
     // retrieve the list of products in a category
     public static DataTable GetAllProductsInCategory(string categoryId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetAllProductsInCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@CategoryID";
-        param.Value = categoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure and save the results in a DataTable
-        DataTable table = GenericDataAccess.ExecuteSelectCommand(comm);
+        int howManyPages;
+        var items = CatalogApiClient.GetProducts("1", 200, 100, null, int.Parse(categoryId), null, false, out howManyPages);
+
+        // Convert result.Items (List<ProductDto>) to DataTable
+        DataTable table = new DataTable();
+        table.Columns.Add("ProductId", typeof(int));
+        table.Columns.Add("Name", typeof(string));
+        table.Columns.Add("Description", typeof(string));
+        table.Columns.Add("Price", typeof(decimal));
+        table.Columns.Add("Image", typeof(string));
+        table.Columns.Add("Thumbnail", typeof(string));
+        table.Columns.Add("PromoFront", typeof(bool));
+        table.Columns.Add("PromoDept", typeof(bool));
+
+        foreach (var item in items)
+        {
+            table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.ImageUrl, item.Thumbnail, item.PromoFront, item.PromoDept);
+        }
+
         return table;
     }
 
