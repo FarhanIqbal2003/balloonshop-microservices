@@ -38,4 +38,32 @@ EXEC dbo.aspnet_Membership_CreateUser
     @UserId = @UserId OUTPUT;
 GO
 
+IF NOT EXISTS (
+    SELECT 1 FROM dbo.aspnet_Roles r
+    JOIN dbo.aspnet_Applications a ON r.ApplicationId = a.ApplicationId
+    WHERE r.RoleName = 'Administrators'
+      AND a.LoweredApplicationName = '/'
+)
+BEGIN
+    EXEC dbo.aspnet_Roles_CreateRole
+        @ApplicationName = N'/',
+        @RoleName = N'Administrators';
+END
 
+IF NOT EXISTS (
+    SELECT 1
+    FROM dbo.aspnet_UsersInRoles ur
+    JOIN dbo.aspnet_Users u ON ur.UserId = u.UserId
+    JOIN dbo.aspnet_Roles r ON ur.RoleId = r.RoleId
+    JOIN dbo.aspnet_Applications a ON u.ApplicationId = a.ApplicationId
+    WHERE u.UserName = 'admin'
+      AND r.RoleName = 'Administrators'
+      AND a.LoweredApplicationName = '/'
+)
+BEGIN
+    EXEC dbo.aspnet_UsersInRoles_AddUsersToRoles
+        @ApplicationName = N'/',
+        @UserNames = N'admin',
+        @RoleNames = N'Administrators',
+        @CurrentTimeUtc = @Utc
+END
