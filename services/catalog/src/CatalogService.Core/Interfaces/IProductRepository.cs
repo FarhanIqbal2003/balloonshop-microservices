@@ -6,7 +6,7 @@ namespace CatalogService.Core.Interfaces
     {
         Task<IEnumerable<Product>> GetAllAsync();
         Task<Product?> GetByIdAsync(int id);
-        Task AddAsync(Product product);
+        Task AddAsync(Product product, int categoryId);
         Task UpdateAsync(Product product);
         Task DeleteAsync(int id);
         // New method for promo-front products

@@ -20,8 +20,14 @@ namespace CatalogService.Infrastructure.Repositories
         public async Task<Product?> GetByIdAsync(int id) =>
             await _db.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task AddAsync(Product product)
-        {
+        public async Task AddAsync(Product product, int categoryId)
+        {            
+            var category = await _db.Categories.FindAsync(categoryId);
+            if (category == null)
+                throw new Exception("Category not found");
+            
+            product.Categories.Add(category);
+            
             _db.Products.Add(product);
             await _db.SaveChangesAsync();
         }

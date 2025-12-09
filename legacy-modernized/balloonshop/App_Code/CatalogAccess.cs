@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Text.RegularExpressions;
+using System.Web.UI.MobileControls;
 using System.Xml.Linq;
 
 /// <summary>
@@ -189,7 +190,7 @@ public static class CatalogAccess
             table.Rows.Add(item.ProductID, item.Name, item.Description, item.Price, item.ImageUrl, item.Thumbnail, item.PromoFront, item.PromoDept);
         }
 
-        return table;        
+        return table;
     }
 
     // retrieve the list of products in a category
@@ -227,7 +228,7 @@ public static class CatalogAccess
         table.Columns.Add("AttributeName", typeof(string));
         table.Columns.Add("AttributeValueId", typeof(int));
         table.Columns.Add("AttributeValue", typeof(string));
-        
+
         foreach (var item in items)
         {
             table.Rows.Add(item.AttributeName, item.AttributeValueID, item.AttributeValue);
@@ -241,9 +242,9 @@ public static class CatalogAccess
     string pageNumber, out int howManyPages)
     {
         var items = CatalogApiClient.GetProducts(
-            pageNumber, 
-            BalloonShopConfiguration.ProductsPerPage, 
-            BalloonShopConfiguration.ProductDescriptionLength, 
+            pageNumber,
+            BalloonShopConfiguration.ProductsPerPage,
+            BalloonShopConfiguration.ProductDescriptionLength,
             null,
             null,
             searchString,
@@ -273,7 +274,7 @@ public static class CatalogAccess
     // Update department details
     public static bool UpdateDepartment(string id, string name, string description)
     {
-        return CatalogApiClient.UpdateDepartment(new DepartmentDto() { DepartmentID = int.Parse(id), Description = description, Name = name });        
+        return CatalogApiClient.UpdateDepartment(new DepartmentDto() { DepartmentID = int.Parse(id), Description = description, Name = name });
     }
 
     // Delete department
@@ -292,16 +293,18 @@ public static class CatalogAccess
     public static bool CreateCategory(string departmentId,
      string name, string description)
     {
-        return CatalogApiClient.CreateCategory(new CategoryDto() { DepartmentID = int.Parse(departmentId), Name = name, Description = description});        
+        return CatalogApiClient.CreateCategory(new CategoryDto() { DepartmentID = int.Parse(departmentId), Name = name, Description = description });
     }
 
     // Update category details
     public static bool UpdateCategory(string id, string name, string description)
     {
-        return CatalogApiClient.UpdateCategory(new CategoryDto() { 
+        return CatalogApiClient.UpdateCategory(new CategoryDto()
+        {
             CategoryID = int.Parse(id),
             Name = name,
-            Description = description });
+            Description = description
+        });
     }
 
     // Delete Category
@@ -336,147 +339,37 @@ public static class CatalogAccess
     }
 
     // Create a new product
-    public static bool CreateProduct(string categoryId, string name, string description, string price, string Thumbnail, string Image, string PromoDept, string PromoFront)
+    public static bool CreateProduct(string categoryId, string name, string description, string price, string Thumbnail, string Image,
+        string PromoDept, string PromoFront)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogCreateProduct";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@CategoryID";
-        param.Value = categoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductName";
-        param.Value = name;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductDescription";
-        param.Value = description;
-        param.DbType = DbType.String;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@Price";
-        param.Value = price;
-        param.DbType = DbType.Decimal;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@Thumbnail";
-        param.Value = Thumbnail;
-        param.DbType = DbType.String;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@Image";
-        param.Value = Image;
-        param.DbType = DbType.String;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PromoDept";
-        param.Value = PromoDept;
-        param.DbType = DbType.Boolean;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PromoFront";
-        param.Value = PromoFront;
-        param.DbType = DbType.Boolean;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
+        return CatalogApiClient.CreateProduct(new ProductDto()
         {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result >= 1);
+            CategoryId = int.Parse(categoryId),
+            Name = name,
+            Description = description,
+            Price = decimal.Parse(price),
+            Thumbnail = Thumbnail,
+            ImageUrl = Image,
+            PromoDept = bool.Parse(PromoDept),
+            PromoFront = bool.Parse(PromoFront)
+        });
     }
 
     // Update an existing product
-    public static bool UpdateProduct(string productId, string name, string description, string price, string Thumbnail, string Image, string PromoDept, string PromoFront)
+    public static bool UpdateProduct(string productId, string name, string description, string price, string Thumbnail, string Image, 
+        string PromoDept, string PromoFront)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogUpdateProduct";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductName";
-        param.Value = name;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@ProductDescription";
-        param.Value = description;
-        param.DbType = DbType.String;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@Price";
-        param.Value = price;
-        param.DbType = DbType.Decimal;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@Thumbnail";
-        param.Value = Thumbnail;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@Image";
-        param.Value = Image;
-        param.DbType = DbType.String;
-        param.Size = 50;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PromoDept";
-        param.Value = PromoDept;
-        param.DbType = DbType.Boolean;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@PromoFront";
-        param.Value = PromoFront;
-        param.DbType = DbType.Boolean;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
+        return CatalogApiClient.UpdateProduct(new ProductDto()
         {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+            ProductID = int.Parse(productId),
+            Name = name,
+            Description = description,
+            Price = decimal.Parse(price),
+            Thumbnail = Thumbnail,
+            ImageUrl = Image,
+            PromoDept = bool.Parse(PromoDept),
+            PromoFront = bool.Parse(PromoFront)
+        });
     }
 
     // get categories that contain a specified product
@@ -626,29 +519,7 @@ public static class CatalogAccess
     // deletes a product from the product catalog
     public static bool DeleteProduct(string productId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogDeleteProduct";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.DeleteProduct(int.Parse(productId));
     }
 
     // gets product recommendations

@@ -14,6 +14,9 @@ namespace CatalogService.Core.DTOs
         // Many-to-many category relationship
         public List<CategoryDto> Categories { get; set; } = new();
 
+        // Only used for POST
+        public int? CategoryId { get; set; }
+
         // Optional — if you want to include department info for read endpoints
         public string? DepartmentName { get; set; }
     }

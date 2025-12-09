@@ -280,6 +280,51 @@ public static class CatalogApiClient
 
                 return true;
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+    }
+    public static bool UpdateProduct(ProductDto product)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                string url = _baseUrl + "api/v1/products/" + product.ProductID;
+
+                // Convert object to JSON
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonData = serializer.Serialize(product);
+
+                // Upload data with PUT
+                string response = client.UploadString(url, "PUT", jsonData);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+    public static bool DeleteProduct(int productId)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                string url = _baseUrl + "api/v1/products/" + productId;
+
+                // WebClient does not have a direct Delete method with response,
+                // so you can use UploadString with empty body and "DELETE" verb
+                client.UploadString(url, "DELETE", "");
+
+                return true;
+            }
             catch
             {
                 return false;
@@ -347,6 +392,7 @@ public class ProductDto
     public string ImageUrl { get; set; }
     public bool PromoFront { get; set; }
     public bool PromoDept { get; set; }
+    public int? CategoryId { get; set; }
 }
 
 public class AttributeValueDto

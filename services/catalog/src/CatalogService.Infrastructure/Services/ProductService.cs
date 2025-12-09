@@ -32,7 +32,7 @@ namespace CatalogService.Infrastructure.Services
         public async Task<ProductDto> CreateAsync(ProductDto dto)
         {
             var entity = _mapper.Map<Product>(dto);
-            await _repo.AddAsync(entity);
+            await _repo.AddAsync(entity, dto.CategoryId ?? 0);
             return _mapper.Map<ProductDto>(entity);
         }
 
