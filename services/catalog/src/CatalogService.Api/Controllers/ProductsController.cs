@@ -51,6 +51,18 @@ namespace CatalogService.Api.Controllers
             return Ok(attributes);
         }
 
+        [HttpGet("{productId}/categories")]
+        public async Task<IActionResult> GetCategoriesForProduct(int productId)
+        {
+            var result = await _service.GetCategoriesForProduct(productId);
+
+            if (result == null || !result.Any())
+                return NotFound($"No categories found for product {productId}");
+
+            return Ok(result);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Create(ProductDto dto)
         {

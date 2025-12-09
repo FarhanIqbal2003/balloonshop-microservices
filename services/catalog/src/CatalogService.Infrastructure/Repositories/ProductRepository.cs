@@ -132,5 +132,13 @@ namespace CatalogService.Infrastructure.Repositories
 
             return result;
         }
+        public async Task<IEnumerable<Category>> GetCategoriesForProduct(int productId)
+        {
+            var categories = await _db.Categories
+                .Where(c => c.Products.Any(p => p.Id == productId))
+                .ToListAsync();
+
+            return categories;
+        }
     }
 }

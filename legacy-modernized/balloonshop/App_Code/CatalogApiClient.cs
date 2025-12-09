@@ -346,6 +346,22 @@ public static class CatalogApiClient
             return serializer.Deserialize<List<AttributeValueDto>>(response);
         }
     }
+    public static List<CategoryDto> GetProductCategories(string productId)
+    {
+        using (var client = new WebClient())
+        {
+            client.BaseAddress = _baseUrl;
+            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+            string url = "api/v1/products/" + productId+ "/categories";
+
+            string response = client.DownloadString(url);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<List<CategoryDto>>(response);
+        }
+    }
+
     #endregion Products
 }
 

@@ -375,18 +375,19 @@ public static class CatalogAccess
     // get categories that contain a specified product
     public static DataTable GetCategoriesWithProduct(string productId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogGetCategoriesWithProduct";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // execute the stored procedure
-        return GenericDataAccess.ExecuteSelectCommand(comm);
+        var items = CatalogApiClient.GetProductCategories(productId);
+
+        // convert list to DataTable (so UI pages remain unchanged)
+        var dt = new DataTable();
+        dt.Columns.Add("CategoryID", typeof(int));
+        dt.Columns.Add("Name", typeof(string));
+
+        foreach (var item in items)
+        {
+            dt.Rows.Add(item.CategoryID, item.Name);
+        }
+
+        return dt;
     }
 
     // get categories that do not contain a specified product

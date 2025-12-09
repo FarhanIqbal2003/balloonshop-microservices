@@ -20,5 +20,6 @@ namespace CatalogService.Core.Interfaces
             bool allWords
         );
         Task<IEnumerable<AttributeValue>> GetProductAttributes(int productId);
+        Task<IEnumerable<Category>> GetCategoriesForProduct(int productId);
     }
 }

@@ -83,5 +83,11 @@ namespace CatalogService.Infrastructure.Services
             var attributeValues = await _repo.GetProductAttributes(productId);
             return attributeValues.Select(p => _mapper.Map<AttributeValueResponse>(p));
         }
+
+        public async Task<IEnumerable<CategoryDto>> GetCategoriesForProduct(int productId)
+        {
+            var categories = await _repo.GetCategoriesForProduct(productId);
+            return categories.Select(c => _mapper.Map<CategoryDto>(c));
+        }
     }
 }
