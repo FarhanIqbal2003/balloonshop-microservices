@@ -97,5 +97,12 @@ namespace CatalogService.Api.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpDelete("{productId}/categories/{categoryId}")]
+        public async Task<IActionResult> RemoveProductFromCategory(int productId, int categoryId)
+        {
+            await _service.RemoveProductFromCategoryAsync(productId, categoryId);
+            return NoContent();
+        }
     }
 }

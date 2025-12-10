@@ -140,5 +140,30 @@ namespace CatalogService.Infrastructure.Repositories
 
             return categories;
         }
+
+        public async Task<bool> RemoveProductFromCategoryAsync(int productId, int categoryId)
+        {
+            // Load product + its categories
+            var product = await _db.Products
+                .Include(p => p.Categories)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null)
+                return false;
+
+            // Find matching category
+            var category = product.Categories
+                .FirstOrDefault(c => c.CategoryId == categoryId);
+
+            if (category == null)
+                return false;
+
+            // Remove from navigation collection
+            product.Categories.Remove(category);
+
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

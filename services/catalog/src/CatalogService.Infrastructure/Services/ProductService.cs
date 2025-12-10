@@ -16,26 +16,22 @@ namespace CatalogService.Infrastructure.Services
             _repo = repo;
             _mapper = mapper;
         }
-
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await _repo.GetAllAsync();
             return products.Select(p => _mapper.Map<ProductDto>(p));
         }
-
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
             var p = await _repo.GetByIdAsync(id);
             return p == null ? null : _mapper.Map<ProductDto>(p);
         }
-
         public async Task<ProductDto> CreateAsync(ProductDto dto)
         {
             var entity = _mapper.Map<Product>(dto);
             await _repo.AddAsync(entity, dto.CategoryId ?? 0);
             return _mapper.Map<ProductDto>(entity);
         }
-
         public async Task UpdateAsync(int id, ProductDto dto)
         {
             var entity = await _repo.GetByIdAsync(id);
@@ -52,7 +48,6 @@ namespace CatalogService.Infrastructure.Services
 
             await _repo.UpdateAsync(entity);
         }
-
         public async Task DeleteAsync(int id)
         {
             var entity = await _repo.GetByIdAsync(id);
@@ -61,6 +56,13 @@ namespace CatalogService.Infrastructure.Services
 
             await _repo.DeleteAsync(id);
         }
+        public async Task RemoveProductFromCategoryAsync(int productId, int categoryId)
+        {
+            var removed  = await _repo.RemoveProductFromCategoryAsync(productId, categoryId);
+            if (removed  == false)
+                throw new NotFoundException($"Product with id {productId} and category id {categoryId} not found.");
+        }
+
         public async Task<PagedResponse<ProductDto>> GetProductsAsync(ProductsRequest request)
         {
             var (items, totalCount) = await _repo.GetProductsAsync(

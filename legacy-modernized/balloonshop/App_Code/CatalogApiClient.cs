@@ -331,6 +331,23 @@ public static class CatalogApiClient
             }
         }
     }
+    public static bool RemoveProductFromCategory(int productId, int categoryId)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                string url = _baseUrl + "api/v1/products/" + productId + "/categories/" + categoryId;
+                client.UploadString(url, "DELETE", "");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+
     public static List<AttributeValueDto> GetProductsAttributes(string productId)
     {
         using (var client = new WebClient())
