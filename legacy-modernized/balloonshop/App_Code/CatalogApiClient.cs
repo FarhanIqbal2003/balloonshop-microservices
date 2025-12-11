@@ -331,7 +331,7 @@ public static class CatalogApiClient
             }
         }
     }
-    public static bool RemoveProductFromCategory(int productId, int categoryId)
+    public static bool RemoveProductFromCategory(string productId, string categoryId)
     {
         using (var client = new WebClient())
         {
