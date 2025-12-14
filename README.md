@@ -197,7 +197,7 @@ If you'd like to suggest improvements, open an issue or PR.
 
 ## 📜 License
 
-MIT License © [FarhanIqbal2003]
+MIT License © FarhanIqbal2003
 
 ---
 
