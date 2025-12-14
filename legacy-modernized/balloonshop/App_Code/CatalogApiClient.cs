@@ -347,7 +347,25 @@ public static class CatalogApiClient
             }
         }
     }
-
+    public static bool AssignProductToCategory(string productId, string categoryId)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string url = _baseUrl + "api/v1/Products/api/v1/products/" + productId + "/categories/" + categoryId;
+                                
+                // Send POST request
+                string response = client.UploadString(url, "POST", "");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+    }
     public static List<AttributeValueDto> GetProductsAttributes(string productId)
     {
         using (var client = new WebClient())

@@ -50,6 +50,7 @@ BEGIN
         @RoleName = N'Administrators';
 END
 
+DECLARE @Utc DATETIME = GETUTCDATE();
 IF NOT EXISTS (
     SELECT 1
     FROM dbo.aspnet_UsersInRoles ur

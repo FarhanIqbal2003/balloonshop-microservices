@@ -70,6 +70,15 @@ namespace CatalogService.Api.Controllers
             return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
+        [HttpPost("api/v1/products/{productId}/categories/{categoryId}")]
+        public async Task<IActionResult> AssignProductToCategory(
+    int productId, int categoryId)
+        {
+            await _service.AssignProductToCategoryAsync(productId, categoryId);
+            return NoContent();
+        }
+
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, ProductDto dto)
         {

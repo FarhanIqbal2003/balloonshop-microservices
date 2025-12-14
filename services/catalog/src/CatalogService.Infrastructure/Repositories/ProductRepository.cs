@@ -164,6 +164,33 @@ namespace CatalogService.Infrastructure.Repositories
             await _db.SaveChangesAsync();
             return true;
         }
+        public async Task<bool> AssignProductToCategoryAsync(int productId, int categoryId)
+        {
+            // load product with its category collection
+            var product = await _db.Products
+                .Include(p => p.Categories)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null)
+                return false;
+
+            // load the category
+            var category = await _db.Categories
+                .FirstOrDefaultAsync(c => c.CategoryId == categoryId);
+
+            if (category == null)
+                return false;
+
+            // check if already assigned
+            if (product.Categories.Any(c => c.CategoryId == categoryId))
+                return true;   // same as SP: no error if already exists
+
+            // assign
+            product.Categories.Add(category);
+
+            await _db.SaveChangesAsync();
+            return true;
+        }
 
     }
 }

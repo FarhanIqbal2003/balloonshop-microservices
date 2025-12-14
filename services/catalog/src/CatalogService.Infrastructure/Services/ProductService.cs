@@ -32,6 +32,15 @@ namespace CatalogService.Infrastructure.Services
             await _repo.AddAsync(entity, dto.CategoryId ?? 0);
             return _mapper.Map<ProductDto>(entity);
         }
+        public async Task AssignProductToCategoryAsync(int productId, int categoryId)
+        {
+            bool assigned = await _repo.AssignProductToCategoryAsync(productId, categoryId);
+
+            if (!assigned)
+                throw new NotFoundException(
+                    $"Product {productId} or Category {categoryId} not found.");
+        }
+
         public async Task UpdateAsync(int id, ProductDto dto)
         {
             var entity = await _repo.GetByIdAsync(id);

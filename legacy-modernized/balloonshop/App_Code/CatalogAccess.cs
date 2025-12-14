@@ -410,35 +410,7 @@ public static class CatalogAccess
     // assign a product to a new category
     public static bool AssignProductToCategory(string productId, string categoryId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogAssignProductToCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@CategoryID";
-        param.Value = categoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.AssignProductToCategory(productId, categoryId);
     }
 
     // move product to a new category
@@ -487,35 +459,6 @@ public static class CatalogAccess
     public static bool RemoveProductFromCategory(string productId, string categoryId)
     {
         return CatalogApiClient.RemoveProductFromCategory(productId, categoryId);
-        //// get a configured DbCommand object
-        //DbCommand comm = GenericDataAccess.CreateCommand();
-        //// set the stored procedure name
-        //comm.CommandText = "CatalogRemoveProductFromCategory";
-        //// create a new parameter
-        //DbParameter param = comm.CreateParameter();
-        //param.ParameterName = "@ProductID";
-        //param.Value = productId;
-        //param.DbType = DbType.Int32;
-        //comm.Parameters.Add(param);
-        //// create a new parameter
-        //param = comm.CreateParameter();
-        //param.ParameterName = "@CategoryID";
-        //param.Value = categoryId;
-        //param.DbType = DbType.Int32;
-        //comm.Parameters.Add(param);
-        //// result will represent the number of changed rows
-        //int result = -1;
-        //try
-        //{
-        //    // execute the stored procedure
-        //    result = GenericDataAccess.ExecuteNonQuery(comm);
-        //}
-        //catch
-        //{
-        //    // any errors are logged in GenericDataAccess, we ignore them here
-        //}
-        //// result will be 1 in case of success 
-        //return (result != -1);
     }
 
     // deletes a product from the product catalog
