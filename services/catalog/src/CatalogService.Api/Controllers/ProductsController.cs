@@ -113,5 +113,11 @@ namespace CatalogService.Api.Controllers
             await _service.RemoveProductFromCategoryAsync(productId, categoryId);
             return NoContent();
         }
+        [HttpGet("{productId}/categories/unassigned")]
+        public async Task<IActionResult> GetUnassignedCategories(int productId)
+        {
+            var categories = await _service.GetCategoriesWithoutProductAsync(productId);
+            return Ok(categories);
+        }
     }
 }

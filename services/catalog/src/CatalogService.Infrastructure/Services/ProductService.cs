@@ -100,5 +100,15 @@ namespace CatalogService.Infrastructure.Services
             var categories = await _repo.GetCategoriesForProduct(productId);
             return categories.Select(c => _mapper.Map<CategoryDto>(c));
         }
+        public async Task<List<CategoryDto>> GetCategoriesWithoutProductAsync(int productId)
+        {
+            var categories = await _repo.GetCategoriesWithoutProductAsync(productId);
+
+            if (categories == null || categories.Count == 0)
+                return new List<CategoryDto>();
+
+            return _mapper.Map<List<CategoryDto>>(categories);
+        }
+
     }
 }

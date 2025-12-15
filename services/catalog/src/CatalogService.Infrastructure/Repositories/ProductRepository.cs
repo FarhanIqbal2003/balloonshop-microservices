@@ -191,6 +191,21 @@ namespace CatalogService.Infrastructure.Repositories
             await _db.SaveChangesAsync();
             return true;
         }
+        public async Task<List<Category>> GetCategoriesWithoutProductAsync(int productId)
+        {
+            // Ensure product exists (optional but recommended)
+            bool productExists = await _db.Products
+                .AnyAsync(p => p.Id == productId);
+
+            if (!productExists)
+                return new List<Category>();
+
+            var categories = await _db.Categories
+                .Where(c => !c.Products.Any(p => p.Id == productId))
+                .ToListAsync();
+
+            return categories;
+        }
 
     }
 }

@@ -16,5 +16,6 @@ namespace CatalogService.Core.Interfaces
         Task<IEnumerable<AttributeValueResponse>> GetProductAttributes(int productId);
         Task<IEnumerable<CategoryDto>> GetCategoriesForProduct(int productId);
         Task AssignProductToCategoryAsync(int productId, int categoryId);
+        Task<List<CategoryDto>> GetCategoriesWithoutProductAsync(int productId);
     }
 }
