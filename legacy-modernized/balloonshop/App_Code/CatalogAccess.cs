@@ -415,45 +415,9 @@ public static class CatalogAccess
     }
 
     // move product to a new category
-    public static bool MoveProductToCategory(string productId, string oldCategoryId,
-     string newCategoryId)
+    public static bool MoveProductToCategory(string productId, string oldCategoryId, string newCategoryId)
     {
-        // get a configured DbCommand object
-        DbCommand comm = GenericDataAccess.CreateCommand();
-        // set the stored procedure name
-        comm.CommandText = "CatalogMoveProductToCategory";
-        // create a new parameter
-        DbParameter param = comm.CreateParameter();
-        param.ParameterName = "@ProductID";
-
-        param.Value = productId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@OldCategoryID";
-        param.Value = oldCategoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // create a new parameter
-        param = comm.CreateParameter();
-        param.ParameterName = "@NewCategoryID";
-        param.Value = newCategoryId;
-        param.DbType = DbType.Int32;
-        comm.Parameters.Add(param);
-        // result will represent the number of changed rows
-        int result = -1;
-        try
-        {
-            // execute the stored procedure
-            result = GenericDataAccess.ExecuteNonQuery(comm);
-        }
-        catch
-        {
-            // any errors are logged in GenericDataAccess, we ignore them here
-        }
-        // result will be 1 in case of success 
-        return (result != -1);
+        return CatalogApiClient.MoveProductToCategory(productId, oldCategoryId, newCategoryId);
     }
 
     // removes a product from a category 

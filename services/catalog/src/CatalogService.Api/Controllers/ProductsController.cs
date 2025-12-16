@@ -119,5 +119,17 @@ namespace CatalogService.Api.Controllers
             var categories = await _service.GetCategoriesWithoutProductAsync(productId);
             return Ok(categories);
         }
+
+        [HttpPut("{productId}/categories/move")]
+        public async Task<IActionResult> MoveProductToCategory(int productId, [FromBody] MoveProductCategoryRequest request)
+        {
+            await _service.MoveProductToCategoryAsync(productId, request.OldCategoryId, request.NewCategoryId);
+            return NoContent();
+        }
+        public class MoveProductCategoryRequest
+        {
+            public int OldCategoryId { get; set; }
+            public int NewCategoryId { get; set; }
+        }
     }
 }

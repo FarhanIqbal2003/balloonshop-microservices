@@ -1,4 +1,4 @@
-using CatalogService.Core.Entities;
+﻿using CatalogService.Core.Entities;
 using CatalogService.Core.Interfaces;
 using CatalogService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -205,6 +205,36 @@ namespace CatalogService.Infrastructure.Repositories
                 .ToListAsync();
 
             return categories;
+        }
+        public async Task<bool> MoveProductToCategoryAsync(int productId, int oldCategoryId, int newCategoryId)
+        {
+            var product = await _db.Products
+                .Include(p => p.Categories)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null)
+                return false;
+
+            var oldCategory = product.Categories
+                .FirstOrDefault(c => c.CategoryId == oldCategoryId);
+
+            if (oldCategory == null)
+                return false;
+
+            var newCategory = await _db.Categories
+                .FirstOrDefaultAsync(c => c.CategoryId == newCategoryId);
+
+            if (newCategory == null)
+                return false;
+
+            // Remove old → Add new
+            product.Categories.Remove(oldCategory);
+
+            if (!product.Categories.Any(c => c.CategoryId == newCategoryId))
+                product.Categories.Add(newCategory);
+
+            await _db.SaveChangesAsync();
+            return true;
         }
 
     }

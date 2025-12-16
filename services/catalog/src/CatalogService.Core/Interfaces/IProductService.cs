@@ -17,5 +17,6 @@ namespace CatalogService.Core.Interfaces
         Task<IEnumerable<CategoryDto>> GetCategoriesForProduct(int productId);
         Task AssignProductToCategoryAsync(int productId, int categoryId);
         Task<List<CategoryDto>> GetCategoriesWithoutProductAsync(int productId);
+        Task MoveProductToCategoryAsync(int productId, int oldCategoryId, int newCategoryId);
     }
 }

@@ -109,6 +109,14 @@ namespace CatalogService.Infrastructure.Services
 
             return _mapper.Map<List<CategoryDto>>(categories);
         }
+        public async Task MoveProductToCategoryAsync(int productId, int oldCategoryId, int newCategoryId)
+        {
+            bool moved = await _repo.MoveProductToCategoryAsync(productId, oldCategoryId, newCategoryId);
+
+            if (!moved)
+                throw new NotFoundException(
+                    $"Product {productId} not assigned to category {oldCategoryId}.");
+        }
 
     }
 }

@@ -24,5 +24,6 @@ namespace CatalogService.Core.Interfaces
         Task<bool> AssignProductToCategoryAsync(int productId, int categoryId);
         Task<bool> RemoveProductFromCategoryAsync(int productId, int categoryId);
         Task<List<Category>> GetCategoriesWithoutProductAsync(int productId);
+        Task<bool> MoveProductToCategoryAsync(int productId, int oldCategoryId, int newCategoryId);
     }
 }

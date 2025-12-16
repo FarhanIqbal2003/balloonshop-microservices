@@ -366,6 +366,38 @@ public static class CatalogApiClient
             }
         }
     }
+    public static bool MoveProductToCategory(
+    string productId,
+    string oldCategoryId,
+    string newCategoryId)
+    {
+        using (var client = new WebClient())
+        {
+            try
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                string url = _baseUrl + "api/v1/products/" + productId + "/categories/move";
+
+                var payload = new
+                {
+                    OldCategoryId = int.Parse(oldCategoryId),
+                    NewCategoryId = int.Parse(newCategoryId)
+                };
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string json = serializer.Serialize(payload);
+
+                client.UploadString(url, "PUT", json);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+
     public static List<AttributeValueDto> GetProductsAttributes(string productId)
     {
         using (var client = new WebClient())
