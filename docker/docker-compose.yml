@@ -11,7 +11,7 @@ services:
   catalog-service:
     build:
       context: ..
-      dockerfile: service/catalog/src/catalogservice.api/Dockerfile
+      dockerfile: services/catalog/src/catalogservice.api/Dockerfile
     container_name: catalog-service
     ports:
       - "5001:8080"
